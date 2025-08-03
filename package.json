@@ -1,0 +1,26 @@
+{
+  "name": "sw_jewelry",
+  "version": "1.0.0",
+  "description": "e-commerce site for sharon wisely jewelry",
+  "keywords": [
+    "react"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "tbd"
+  },
+  "license": "ISC",
+  "author": "Lincoln Wisely",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node server.js",
+    "seed": "node utils/seedDatabase.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "mongodb": "6.17"
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "schema": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Unique identifier for the inventory item",
+        "pattern": "^[a-z]+-[0-9]{3}$"
+      },
+      "title": {
+        "type": "string",
+        "description": "Product title/name",
+        "minLength": 1,
+        "maxLength": 100
+      },
+      "description": {
+        "type": "string",
+        "description": "Detailed product description",
+        "minLength": 10,
+        "maxLength": 500
+      },
+      "price": {
+        "type": "number",
+        "description": "Product price in USD",
+        "minimum": 0,
+        "multipleOf": 0.01
+      },
+      "inStock": {
+        "type": "integer",
+        "description": "Number of items available in stock",
+        "minimum": 0
+      },
+      "image": {
+        "type": "string",
+        "description": "URL to product image",
+        "format": "uri"
+      },
+      "tags": {
+        "type": "array",
+        "description": "Array of search tags for the product",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        },
+        "minItems": 1,
+        "maxItems": 10
+      },
+      "category": {
+        "type": "string",
+        "description": "Product category",
+        "enum": ["rings", "bracelets", "necklaces", "earrings"]
+      }
+    },
+    "required": ["id", "title", "description", "price", "inStock", "image", "tags", "category"],
+    "additionalProperties": false
+  },
+  "inventory": [
+    {
+      "id": "ring-001",
+      "title": "Diamond Solitaire Ring",
+      "description": "Classic 14k white gold ring featuring a brilliant cut diamond in a timeless solitaire setting. Perfect for engagements and special occasions.",
+      "price": 2499.99,
+      "inStock": 3,
+      "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400",
+      "tags": ["engagement", "diamond", "solitaire", "white gold", "classic"],
+      "category": "rings"
+    },
+    {
+      "id": "ring-002",
+      "title": "Rose Gold Stacking Ring Set",
+      "description": "Elegant set of three 14k rose gold rings with delicate geometric patterns. Perfect for everyday wear and stacking.",
+      "price": 299.99,
+      "inStock": 8,
+      "image": "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=400",
+      "tags": ["rose gold", "stacking", "geometric", "everyday", "set"],
+      "category": "rings"
+    },
+    {
+      "id": "ring-003",
+      "title": "Sapphire and Diamond Ring",
+      "description": "Stunning 18k yellow gold ring featuring a deep blue sapphire surrounded by sparkling diamonds. A statement piece for any occasion.",
+      "price": 1899.99,
+      "inStock": 2,
+      "image": "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?w=400",
+      "tags": ["sapphire", "diamond", "yellow gold", "statement", "luxury"],
+      "category": "rings"
+    },
+    {
+      "id": "bracelet-001",
+      "title": "Tennis Bracelet",
+      "description": "Timeless 14k white gold bracelet featuring a continuous line of brilliant cut diamonds. Perfect for formal events and everyday elegance.",
+      "price": 3499.99,
+      "inStock": 4,
+      "image": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400",
+      "tags": ["tennis", "diamond", "white gold", "formal", "elegant"],
+      "category": "bracelets"
+    },
+    {
+      "id": "bracelet-002",
+      "title": "Charm Bracelet",
+      "description": "Sterling silver charm bracelet with vintage-inspired charms including a heart, star, and butterfly. Customizable and meaningful.",
+      "price": 149.99,
+      "inStock": 12,
+      "image": "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=400",
+      "tags": ["charms", "sterling silver", "vintage", "customizable", "meaningful"],
+      "category": "bracelets"
+    },
+    {
+      "id": "bracelet-003",
+      "title": "Bangle Set",
+      "description": "Set of three 14k yellow gold bangles with different textures - smooth, hammered, and twisted. Perfect for layering and creating your own style.",
+      "price": 599.99,
+      "inStock": 6,
+      "image": "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?w=400",
+      "tags": ["bangles", "yellow gold", "textured", "layering", "set"],
+      "category": "bracelets"
+    },
+    {
+      "id": "necklace-001",
+      "title": "Pearl Strand Necklace",
+      "description": "Elegant freshwater pearl necklace with 18-inch strand. Classic and sophisticated, perfect for professional settings and special occasions.",
+      "price": 399.99,
+      "inStock": 7,
+      "image": "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?w=400",
+      "tags": ["pearls", "freshwater", "classic", "professional", "elegant"],
+      "category": "necklaces"
+    },
+    {
+      "id": "necklace-002",
+      "title": "Diamond Pendant Necklace",
+      "description": "Delicate 14k white gold chain with a stunning diamond pendant. The perfect everyday luxury piece that transitions from day to evening.",
+      "price": 899.99,
+      "inStock": 5,
+      "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400",
+      "tags": ["diamond", "pendant", "white gold", "everyday", "luxury"],
+      "category": "necklaces"
+    },
+    {
+      "id": "necklace-003",
+      "title": "Layered Chain Necklace",
+      "description": "Trendy set of three 14k gold-plated chains in varying lengths. Perfect for creating a modern layered look with any outfit.",
+      "price": 199.99,
+      "inStock": 15,
+      "image": "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=400",
+      "tags": ["layered", "chains", "gold-plated", "trendy", "modern"],
+      "category": "necklaces"
+    },
+    {
+      "id": "earrings-001",
+      "title": "Diamond Stud Earrings",
+      "description": "Timeless 14k white gold stud earrings with brilliant cut diamonds. A must-have piece that goes with everything and never goes out of style.",
+      "price": 1299.99,
+      "inStock": 6,
+      "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400",
+      "tags": ["diamond", "studs", "white gold", "timeless", "versatile"],
+      "category": "earrings"
+    },
+    {
+      "id": "earrings-002",
+      "title": "Hoop Earrings",
+      "description": "Classic 14k yellow gold hoops in a medium size. Perfect for everyday wear and adding a touch of elegance to any outfit.",
+      "price": 449.99,
+      "inStock": 9,
+      "image": "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=400",
+      "tags": ["hoops", "yellow gold", "classic", "everyday", "elegant"],
+      "category": "earrings"
+    },
+    {
+      "id": "earrings-003",
+      "title": "Drop Earrings",
+      "description": "Stunning 14k rose gold drop earrings with freshwater pearls and small diamond accents. Perfect for special occasions and formal events.",
+      "price": 699.99,
+      "inStock": 4,
+      "image": "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?w=400",
+      "tags": ["drop", "rose gold", "pearls", "diamond", "formal"],
+      "category": "earrings"
+    },
+    {
+      "id": "ring-004",
+      "title": "Vintage Style Ring",
+      "description": "Art deco inspired 14k white gold ring with intricate filigree work and small diamond accents. A unique piece with vintage charm.",
+      "price": 799.99,
+      "inStock": 1,
+      "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400",
+      "tags": ["vintage", "art deco", "filigree", "white gold", "unique"],
+      "category": "rings"
+    },
+    {
+      "id": "bracelet-004",
+      "title": "Leather Wrap Bracelet",
+      "description": "Bohemian style leather bracelet with sterling silver accents and adjustable wrap design. Perfect for casual and festival wear.",
+      "price": 89.99,
+      "inStock": 20,
+      "image": "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=400",
+      "tags": ["leather", "bohemian", "sterling silver", "casual", "adjustable"],
+      "category": "bracelets"
+    },
+    {
+      "id": "necklace-004",
+      "title": "Choker Necklace",
+      "description": "Modern 14k gold-plated choker with geometric pendant. Perfect for adding edge to any outfit and making a statement.",
+      "price": 159.99,
+      "inStock": 11,
+      "image": "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=400",
+      "tags": ["choker", "geometric", "gold-plated", "modern", "statement"],
+      "category": "necklaces"
+    },
+    {
+      "id": "earrings-004",
+      "title": "Statement Earrings",
+      "description": "Bold 14k gold-plated statement earrings with colorful enamel details. Perfect for adding personality and color to any outfit.",
+      "price": 129.99,
+      "inStock": 8,
+      "image": "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?w=400",
+      "tags": ["statement", "enamel", "colorful", "bold", "personality"],
+      "category": "earrings"
+    }
+  ]
+}
