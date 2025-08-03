@@ -1,15 +1,15 @@
-# Sharon Wisely Jewelry API
+# SW Jewelry API
 
-A RESTful API for managing jewelry inventory with full CRUD operations.
+RESTful API for managing jewelry inventory with full CRUD operations.
 
 ## Features
 
-- ✅ Complete CRUD operations for jewelry inventory
-- ✅ Advanced filtering and search capabilities
-- ✅ Inventory statistics and analytics
-- ✅ Data validation and error handling
-- ✅ MongoDB integration with secure environment variables
-- ✅ CORS enabled for frontend integration
+- Complete CRUD operations for jewelry inventory
+- Advanced filtering and search capabilities
+- Inventory statistics and analytics
+- Data validation and error handling
+- MongoDB integration with secure environment variables
+- CORS enabled for frontend integration
 
 ## Setup
 
