@@ -6,12 +6,10 @@
  - Node JS for backend javascript
  - React for front-end
 
-
-
-#### About the API
+#### About 
 
 Starting out with a simlpe RESTful API for managing jewelry inventory with full CRUD operations. If youre not me, this repo wont be very helpful because you need the mongo db pw. 
-
+RESTful API for managing jewelry inventory with full CRUD operations.
 
 ## Setup
 
