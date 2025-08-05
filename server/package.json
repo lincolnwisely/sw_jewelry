@@ -9,11 +9,11 @@
   "license": "ISC",
   "author": "Lincoln Wisely",
   "type": "commonjs",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "node api/server.js",
+    "dev": "node api/index.js",
     "seed": "node utils/seedDatabase.js",
-    "start": "node api/server.js"
+    "start": "node api/index.js"
   },
   "dependencies": {
     "dotenv": "^17.2.1",

@@ -168,7 +168,8 @@ sw_jewelry/
 ├── utils/
 │   └── seedDatabase.js
 ├── example_jewelry.json
-├── server.js
+├── api/
+|   └── index.js
 ├── package.json
 └── README.md
 ```
