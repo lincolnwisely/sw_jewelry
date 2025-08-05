@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "e-commerce site for sharon wisely jewelry",
   "keywords": [
-    "react", 
+    "react",
     "express",
-    "mongodb",  
+    "mongodb",
     "node"
   ],
   "repository": {
@@ -38,5 +38,8 @@
   "engines": {
     "node": ">=16.0.0",
     "npm": ">=8.0.0"
+  },
+  "dependencies": {
+    "@types/react": "^19.1.9"
   }
 }

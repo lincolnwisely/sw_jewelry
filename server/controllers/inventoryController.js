@@ -6,6 +6,10 @@ const password = process.env.MONGODB_PASSWORD;
 const cluster = process.env.MONGODB_CLUSTER || 'cluster0.9qqs7tb.mongodb.net';
 const databaseName = process.env.MONGODB_DATABASE || 'sw_jewelry_db';
 
+if (!password) {
+  console.error('MONGODB_PASSWORD environment variable is required');
+  process.exit(1);
+}
 const uri = `mongodb+srv://${username}:${password}@${cluster}/?retryWrites=true&w=majority&appName=Cluster0`;
 
 const client = new MongoClient(uri, {

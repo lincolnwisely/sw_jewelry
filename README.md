@@ -1,6 +1,6 @@
-# Sharon Wisely Jewelry - Monorepo
+# SW Jewelry - Monorepo
 
-A full-stack e-commerce application for Sharon Wisely Jewelry with React frontend and Express API backend.
+A full-stack e-commerce application for SW Jewelry with React frontend and Express API backend.
 
 ## Project Structure
 

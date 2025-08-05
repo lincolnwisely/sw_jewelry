@@ -6,6 +6,9 @@ const path = require('path');
 // MongoDB connection configuration
 const username = process.env.MONGODB_USERNAME || 'lincolnwisely';
 const password = process.env.MONGODB_PASSWORD;
+
+
+console.log(process.env.MONGODB_PASSWORD);
 const cluster = process.env.MONGODB_CLUSTER || 'cluster0.9qqs7tb.mongodb.net';
 const databaseName = process.env.MONGODB_DATABASE || 'sw_jewelry_db';
 

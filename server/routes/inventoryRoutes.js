@@ -8,7 +8,7 @@ const {
   updateInventoryItem,
   deleteInventoryItem,
   getInventoryStats
-} = require('../../controllers/inventoryController');
+} = require('../controllers/inventoryController');
 
 // GET all inventory items with optional filtering
 // Query parameters: category, tag, minPrice, maxPrice, inStock
