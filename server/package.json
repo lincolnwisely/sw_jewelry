@@ -11,9 +11,9 @@
   "type": "commonjs",
   "main": "server.js",
   "scripts": {
-    "dev": "node server.js",
+    "dev": "node api/server.js",
     "seed": "node utils/seedDatabase.js",
-    "start": "node server.js"
+    "start": "node api/server.js"
   },
   "dependencies": {
     "dotenv": "^17.2.1",
