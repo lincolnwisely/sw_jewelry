@@ -11,7 +11,7 @@ const getApiUrl = () => {
   }
   
   // Production fallback (update with your deployed URL)
-  return 'https://your-deployed-api.com';
+  return 'https://server-bold-resonance-8209.fly.dev';
 };
 
 export const API_BASE_URL = getApiUrl();
