@@ -11,7 +11,7 @@
 
 2. **Set Environment Variables**
    ```bash
-   heroku config:set MONGODB_PASSWORD=your_password
+   heroku config:set MONGODB_PASSWORD=process.env.MONGODB_PASSWORD;
    heroku config:set MONGODB_USERNAME=lincolnwisely
    heroku config:set MONGODB_CLUSTER=cluster0.9qqs7tb.mongodb.net
    heroku config:set MONGODB_DATABASE=sw_jewelry_db

@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "e-commerce site for sharon wisely jewelry",
   "keywords": [
-    "react"
+    "react", 
+    "express",
+    "mongodb",  
+    "node"
   ],
   "repository": {
     "type": "git",
@@ -11,16 +14,29 @@
   },
   "license": "ISC",
   "author": "Lincoln Wisely",
-  "type": "commonjs",
-  "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
-    "dev": "node server.js",
-    "seed": "node utils/seedDatabase.js",
-    "start": "node server.js"
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "npm run dev --workspace=server",
+    "dev:client": "npm run start --workspace=client",
+    "build": "npm run build --workspace=client",
+    "start": "npm run start --workspace=server",
+    "seed": "npm run seed --workspace=server",
+    "install:all": "npm install && npm install --workspace=client && npm install --workspace=server",
+    "clean": "npm run clean:root && npm run clean:client && npm run clean:server",
+    "clean:root": "rm -rf node_modules package-lock.json",
+    "clean:client": "rm -rf client/node_modules client/package-lock.json",
+    "clean:server": "rm -rf server/node_modules server/package-lock.json"
   },
-  "dependencies": {
-    "dotenv": "^17.2.1",
-    "express": "^5.1.0",
-    "mongodb": "6.17"
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
   }
 }

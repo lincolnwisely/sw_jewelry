@@ -1,0 +1,24 @@
+{
+  "name": "@sw_jewelry/server",
+  "version": "1.0.0",
+  "description": "API for Sharon Wisely Jewelry",
+  "repository": {
+    "type": "git",
+    "url": "tbd"
+  },
+  "license": "ISC",
+  "author": "Lincoln Wisely",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "seed": "node utils/seedDatabase.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "mongodb": "6.17"
+  }
+}
+  

@@ -3,7 +3,7 @@ const express = require('express');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 
 // Import routes
-const inventoryRoutes = require('./routes/inventoryRoutes');
+const inventoryRoutes = require('./server/routes/inventoryRoutes');
 
 const app = express();
 const port = process.env.PORT || 3000;
