@@ -16,9 +16,11 @@
     "start": "node api/index.js"
   },
   "dependencies": {
+    "docker": "^1.0.0",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
-    "mongodb": "6.17"
+    "mongodb": "6.17",
+    "morgan": "^1.10.1",
+    "validator": "^13.15.15"
   }
 }
-  

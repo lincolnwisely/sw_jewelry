@@ -54,7 +54,7 @@ sw_jewelry/
    MONGODB_DATABASE=sw_jewelry_db
    
    # Server Configuration
-   PORT=3000
+   PORT=4000
    NODE_ENV=development
    ```
 
