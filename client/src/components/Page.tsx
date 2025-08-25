@@ -1,11 +1,11 @@
-import React, {type ReactNode} from 'react';
+import React, { type ReactNode } from "react";
 interface PageProps {
   title: string;
   children?: ReactNode;
   className?: string;
 }
 
-export default function Page({ title, children, className = '' }: PageProps) {
+export default function Page({ title, children, className = "" }: PageProps) {
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Page Header */}
@@ -14,9 +14,7 @@ export default function Page({ title, children, className = '' }: PageProps) {
       </div>
 
       {/* Page Content */}
-      <div className="space-y-4">
-        {children}
-      </div>
+      <div className="space-y-4">{children}</div>
     </div>
   );
-} 
+}

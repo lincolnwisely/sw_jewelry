@@ -1,66 +1,205 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { API_ENDPOINTS, apiCall } from '../config/api';
-import React from 'react';
-import { Item } from './types.ts';
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { API_ENDPOINTS, apiCall } from "../config/api";
+import { Item } from "./types";
 
-export default function Detail(_item?: Item) {
-    //get id from route to fetch itemif not provided in props
-    const { id } = useParams(); 
-    const isPreview = _item;
+interface DetailProps {
+  item?: Item;
+}
 
-    const [item, setItem] = useState(_item ? _item : null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+export default function Detail(props: DetailProps = {}) {
+  const _item = props.item;
+  //get id from route to fetch itemif not provided in props
+  const { id } = useParams();
+  const isPreview = _item;
 
-    useEffect(() => {
-        const fetchItem = async () => {
-            try {
-                setLoading(true);
-                setError(null);
-                
-                const data = await apiCall(API_ENDPOINTS.INVENTORY_BY_ID(id));
-                setItem(data.data);
-            } catch (err) {
-                console.error('Error fetching item:', err);
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        }
+  const [item, setItem] = useState(_item ? _item : null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-        if (!item || !item._id) {
-            fetchItem();
-        } else {
-            setLoading(false);
-        }
-    }, [id, item]);
-    
-    if (loading) {
-        return <div>Loading...</div>
+  useEffect(() => {
+    const fetchItem = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const data = await apiCall(API_ENDPOINTS.INVENTORY_BY_ID(id));
+        setItem(data.data);
+      } catch (err) {
+        console.error("Error fetching item:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!item || !item._id) {
+      fetchItem();
+    } else {
+      setLoading(false);
     }
+  }, [id, item]);
 
-    if (error) {
-        return <div>Error: {error}</div>
-    }
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
-    if (!item) {
-        return <div>Item not found</div>
-    }
-   
+  if (!item) {
+    return <div>Item not found</div>;
+  }
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(price);
+  };
+
+  const getStockStatus = (stock: number) => {
+    if (stock === 0) return { text: "Out of Stock", color: "text-red-600" };
+    if (stock <= 3)
+      return { text: `Only ${stock} left`, color: "text-orange-600" };
+    return { text: "In Stock", color: "text-green-600" };
+  };
+
+  const getCategoryColor = (category: string) => {
+    const colors = {
+      rings: "bg-purple-100 text-purple-800",
+      bracelets: "bg-blue-100 text-blue-800",
+      necklaces: "bg-pink-100 text-pink-800",
+      earrings: "bg-yellow-100 text-yellow-800",
+    };
     return (
-        <div>
-            <img src={item.image} alt={item.title} width={500} height={500} />
-            <h2>{item.title}</h2>
-            <p>{item.description}</p>
-            <p>Price: ${item.price}</p>
-            <p>Category: {item.category}</p>
-            <p>In Stock: {item.inStock}</p>
+      colors[category as keyof typeof colors] || "bg-gray-100 text-gray-800"
+    );
+  };
 
-                {item.tags && item.tags.length > 0  && !isPreview&& (
-                    <p>Tags: {item.tags.join(', ')}</p>
-                )}
+  const stockStatus = getStockStatus(item.inStock);
+
+  if (isPreview) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm border p-4">
+        <img
+          src={item.image}
+          alt={item.title}
+          className="w-full h-48 object-cover rounded mb-4"
+        />
+        <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
+        <p className="text-gray-600 text-sm mb-2">{item.description}</p>
+        <p className="text-xl font-bold">{formatPrice(item.price)}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 py-8">
+      {/* Breadcrumb */}
+      <nav className="mb-6">
+        <Link to="/inventory" className="text-purple-600 hover:text-purple-800">
+          ← Back to Collection
+        </Link>
+      </nav>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Image Section */}
+        <div className="space-y-4">
+          <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+            <img
+              src={item.image}
+              alt={item.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
-    )
+
+        {/* Product Info Section */}
+        <div className="space-y-6">
+          <div>
+            <span
+              className={`px-3 py-1 text-sm font-medium rounded-full ${getCategoryColor(
+                item.category
+              )}`}
+            >
+              {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
+            </span>
+          </div>
+
+          <h1 className="text-3xl font-bold text-gray-900">{item.title}</h1>
+
+          <div className="text-3xl font-bold text-gray-900">
+            {formatPrice(item.price)}
+          </div>
+
+          <div className={`text-lg font-medium ${stockStatus.color}`}>
+            {stockStatus.text}
+          </div>
+
+          <div className="prose max-w-none">
+            <p className="text-gray-700 text-lg leading-relaxed">
+              {item.description}
+            </p>
+          </div>
+
+          {item.tags && item.tags.length > 0 && (
+            <div>
+              <h3 className="text-sm font-medium text-gray-900 mb-2">Tags</h3>
+              <div className="flex flex-wrap gap-2">
+                {item.tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Action Buttons */}
+          <div className="space-y-4">
+            <button
+              className={`w-full py-3 px-6 rounded-lg text-lg font-medium transition-colors ${
+                item.inStock > 0
+                  ? "bg-purple-600 text-white hover:bg-purple-700"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+              disabled={item.inStock === 0}
+            >
+              {item.inStock > 0 ? "Add to Cart" : "Out of Stock"}
+            </button>
+
+            <button className="w-full py-3 px-6 rounded-lg border border-purple-600 text-purple-600 hover:bg-purple-50 text-lg font-medium transition-colors">
+              Add to Wishlist
+            </button>
+          </div>
+
+          {/* Product Details */}
+          <div className="border-t pt-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">
+              Product Details
+            </h3>
+            <dl className="space-y-3">
+              <div className="flex justify-between">
+                <dt className="text-gray-600">Category</dt>
+                <dd className="font-medium capitalize">{item.category}</dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-gray-600">Availability</dt>
+                <dd className="font-medium">{item.inStock} in stock</dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-gray-600">Item ID</dt>
+                <dd className="font-medium">{item.id}</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

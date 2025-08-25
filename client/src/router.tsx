@@ -1,15 +1,16 @@
-import { createBrowserRouter } from 'react-router-dom';
-import Layout from './components/Layout';
-import Inventory from './components/inventory';
-import DetailPage from './components/details';
+import { createBrowserRouter } from "react-router-dom";
+import Layout from "./components/Layout";
+import Inventory from "./components/inventory";
+import Detail from "./components/details";
+import CategoryPage from "./components/CategoryPage";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Layout />,
     children: [
       {
-        path: '/',
+        path: "/",
         element: (
           <div className="text-center py-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
@@ -19,16 +20,20 @@ export const router = createBrowserRouter([
               Discover our beautiful collection of handcrafted jewelry.
             </p>
           </div>
-        )
+        ),
       },
       {
-        path: '/inventory',
-        element: <Inventory />
+        path: "/inventory",
+        element: <Inventory />,
       },
       {
-        path: '/inventory/:id',
-        element: <DetailPage />
-      }
-    ]
-  }
-]); 
+        path: "/inventory/:id",
+        element: <Detail />,
+      },
+      {
+        path: "/category/:category",
+        element: <CategoryPage />,
+      },
+    ],
+  },
+]);

@@ -1,5 +1,5 @@
-import React, {type ReactNode} from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { type ReactNode } from "react";
+import { Outlet } from "react-router-dom";
 
 interface LayoutProps {
   children?: ReactNode;
@@ -21,7 +21,10 @@ export default function Layout({ children }: LayoutProps) {
               <a href="/" className="text-gray-500 hover:text-gray-900">
                 Home
               </a>
-              <a href="/inventory" className="text-gray-500 hover:text-gray-900">
+              <a
+                href="/inventory"
+                className="text-gray-500 hover:text-gray-900"
+              >
                 Inventory
               </a>
               <a href="/about" className="text-gray-500 hover:text-gray-900">
@@ -47,4 +50,4 @@ export default function Layout({ children }: LayoutProps) {
       </footer>
     </div>
   );
-} 
+}
