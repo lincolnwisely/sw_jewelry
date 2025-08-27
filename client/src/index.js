@@ -5,14 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './App';
+import { CartProvider } from './context/CartContext.tsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router}>
-
-    <App />
-    </RouterProvider>
+    <CartProvider>
+      <RouterProvider router={router}>
+        <App />
+      </RouterProvider>
+    </CartProvider>
   </React.StrictMode>
 );
 

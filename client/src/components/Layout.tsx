@@ -1,8 +1,41 @@
-import React, { type ReactNode } from "react";
-import { Outlet } from "react-router-dom";
+import React, { type ReactNode, useState } from "react";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
+import { useCart } from "../context/CartContext.tsx";
+import Cart from "./Cart.tsx";
 
 interface LayoutProps {
   children?: ReactNode;
+}
+
+function CartButton() {
+  const { toggleCart, getTotalItems } = useCart();
+  const totalItems = getTotalItems();
+
+  return (
+    <button
+      onClick={toggleCart}
+      className="text-gray-500 hover:text-gray-900 transition-colors relative"
+    >
+      <svg
+        className="h-6 w-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M3 3h2l.4 2M7 13h10l4-8H5.4m.6 2h2m0 0h8m-8 0v8a2 2 0 002 2h6a2 2 0 002-2v-8"
+        />
+      </svg>
+      {totalItems > 0 && (
+        <span className="absolute -top-2 -right-2 bg-purple-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+          {totalItems > 99 ? "99+" : totalItems}
+        </span>
+      )}
+    </button>
+  );
 }
 
 export default function Layout({ children }: LayoutProps) {
@@ -13,23 +46,102 @@ export default function Layout({ children }: LayoutProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-semibold text-gray-900">
-                Sharon Wisely Jewelry
-              </h1>
-            </div>
-            <nav className="flex space-x-8">
-              <a href="/" className="text-gray-500 hover:text-gray-900">
-                Home
-              </a>
-              <a
-                href="/inventory"
-                className="text-gray-500 hover:text-gray-900"
+              <Link
+                to="/"
+                className="text-xl font-semibold text-gray-900 hover:text-purple-600 transition-colors"
               >
-                Inventory
-              </a>
-              <a href="/about" className="text-gray-500 hover:text-gray-900">
-                About
-              </a>
+                Sharon Wisely Jewelry
+              </Link>
+            </div>
+
+            <nav className="flex items-center space-x-8">
+              <Link
+                to="/"
+                className={`transition-colors ${
+                  isActive("/")
+                    ? "text-purple-600 font-medium"
+                    : "text-gray-500 hover:text-gray-900"
+                }`}
+              >
+                Home
+              </Link>
+              <Link
+                to="/inventory"
+                className={`transition-colors ${
+                  isActive("/inventory")
+                    ? "text-purple-600 font-medium"
+                    : "text-gray-500 hover:text-gray-900"
+                }`}
+              >
+                Collection
+              </Link>
+
+              {/* Category Dropdown */}
+              <div className="relative group">
+                <button className="text-gray-500 hover:text-gray-900 transition-colors flex items-center">
+                  Categories
+                  <svg
+                    className="ml-1 h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <div className="py-1">
+                    <Link
+                      to="/category/rings"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+                    >
+                      Rings
+                    </Link>
+                    <Link
+                      to="/category/necklaces"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+                    >
+                      Necklaces
+                    </Link>
+                    <Link
+                      to="/category/bracelets"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+                    >
+                      Bracelets
+                    </Link>
+                    <Link
+                      to="/category/earrings"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+                    >
+                      Earrings
+                    </Link>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-4">
+                <CartButton />
+                <button className="text-gray-500 hover:text-gray-900 transition-colors">
+                  <svg
+                    className="h-6 w-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
+                </button>
+              </div>
             </nav>
           </div>
         </div>
@@ -48,6 +160,9 @@ export default function Layout({ children }: LayoutProps) {
           </p>
         </div>
       </footer>
+
+      {/* Cart Sliding Panel */}
+      <Cart />
     </div>
   );
 }

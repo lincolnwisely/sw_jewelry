@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { API_ENDPOINTS, apiCall } from "../config/api";
 import { Item } from "./types";
+import { useCart } from "../context/CartContext.tsx";
 
 interface DetailProps {
   item?: Item;
@@ -12,6 +13,7 @@ export default function Detail(props: DetailProps = {}) {
   //get id from route to fetch itemif not provided in props
   const { id } = useParams();
   const isPreview = _item;
+  const { addToCart, setCartOpen } = useCart();
 
   const [item, setItem] = useState(_item ? _item : null);
   const [loading, setLoading] = useState(true);
@@ -79,6 +81,11 @@ export default function Detail(props: DetailProps = {}) {
   };
 
   const stockStatus = getStockStatus(item.inStock);
+
+  const handleAddToCart = () => {
+    addToCart(item);
+    setCartOpen(true); // Open cart panel when item is added
+  };
 
   if (isPreview) {
     return (
@@ -163,6 +170,7 @@ export default function Detail(props: DetailProps = {}) {
           {/* Action Buttons */}
           <div className="space-y-4">
             <button
+              onClick={handleAddToCart}
               className={`w-full py-3 px-6 rounded-lg text-lg font-medium transition-colors ${
                 item.inStock > 0
                   ? "bg-purple-600 text-white hover:bg-purple-700"
