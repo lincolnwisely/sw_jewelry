@@ -22,6 +22,14 @@ export const API_ENDPOINTS = {
   INVENTORY_BY_ID: (id) => `${API_BASE_URL}/api/inventory/${id}`,
   INVENTORY_BY_CATEGORY: (category) => `${API_BASE_URL}/api/inventory/category/${category}`,
   INVENTORY_STATS: `${API_BASE_URL}/api/inventory/stats`,
+  
+  // Authentication endpoints
+  AUTH: {
+    REGISTER: `${API_BASE_URL}/api/auth/register`,
+    LOGIN: `${API_BASE_URL}/api/auth/login`,
+    LOGOUT: `${API_BASE_URL}/api/auth/logout`,
+    ME: `${API_BASE_URL}/api/auth/me`,
+  }
 };
 
 // Helper function for API calls
