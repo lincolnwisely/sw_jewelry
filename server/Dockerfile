@@ -1,12 +1,15 @@
 FROM node:18-alpine
 
+# Install pnpm globally
+RUN npm install -g pnpm
+
 WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
+COPY package.json pnpm-lock.yaml ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install dependencies using pnpm
+RUN pnpm install --frozen-lockfile --prod
 
 # Copy application code
 COPY . .
@@ -19,4 +22,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:3000/ || exit 1
 
 # Start the application
-CMD ["npm", "start"] 
+CMD ["pnpm", "start"] 
