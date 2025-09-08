@@ -1,9 +1,11 @@
 require('dotenv').config({ path: '.env.local' });
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const { errorHandler, notFound } = require('../middleware/errorHandler');
 
 // Import routes
 const inventoryRoutes = require('../routes/inventoryRoutes');
+const authRoutes = require('../routes/authRoutes');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -11,6 +13,7 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // CORS middleware - allow public access
 app.use((req, res, next) => {
@@ -35,9 +38,13 @@ app.get('/', (req, res) => {
       'GET /api/inventory': 'Get all inventory items (public)',
       'GET /api/inventory/:id': 'Get single item by ID (public)',
       'GET /api/inventory/category/:category': 'Get items by category (public)',
-      'GET /api/inventory/stats': 'Get inventory statistics (public)'
+      'GET /api/inventory/stats': 'Get inventory statistics (public)',
+      'POST /api/auth/register': 'Register new user',
+      'POST /api/auth/login': 'User login',
+      'POST /api/auth/logout': 'User logout'
     },
     protectedEndpoints: {
+      'GET /api/auth/me': 'Get current user profile',
       'POST /api/inventory': 'Create new item (admin only)',
       'PUT /api/inventory/:id': 'Update item (admin only)',
       'DELETE /api/inventory/:id': 'Delete item (admin only)'
@@ -47,6 +54,7 @@ app.get('/', (req, res) => {
 
 // API routes
 app.use('/api/inventory', inventoryRoutes);
+app.use('/api/auth', authRoutes);
 
 // Error handling middleware
 app.use(notFound);

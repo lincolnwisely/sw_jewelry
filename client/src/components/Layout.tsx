@@ -1,8 +1,8 @@
-import React, { type ReactNode, useState } from "react";
+import React, { type ReactNode, useState, useRef, useEffect } from "react";
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext.tsx";
 import Cart from "./Cart.tsx";
-
+import { useAuth } from "../context/AuthContext.tsx";
 interface LayoutProps {
   children?: ReactNode;
 }
@@ -35,6 +35,109 @@ function CartButton() {
         </span>
       )}
     </button>
+  );
+}
+
+function UserMenu() {
+  const { logout, state } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    }
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [isMenuOpen]);
+
+  // Show sign in/register links if not authenticated
+  if (!state.isAuthenticated) {
+    return (
+      <div className="flex items-center space-x-4">
+        <Link
+          to="/login"
+          className="text-gray-500 hover:text-gray-900 transition-colors"
+        >
+          Sign In
+        </Link>
+        <Link
+          to="/register"
+          className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors"
+        >
+          Sign Up
+        </Link>
+      </div>
+    );
+  }
+
+  // Show user menu if authenticated
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        className="text-gray-500 hover:text-gray-900 transition-colors flex items-center space-x-2"
+      >
+        <svg
+          className="h-6 w-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+          />
+        </svg>
+        <span className="hidden sm:inline">
+          {state.user?.firstName || 'Account'}
+        </span>
+      </button>
+      
+      {isMenuOpen && (
+        <div 
+          ref={menuRef}
+          className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50"
+        >
+          <div className="py-1">
+            <div className="px-4 py-2 text-sm text-gray-700 border-b">
+              Hello, {state.user?.firstName}!
+            </div>
+            <Link
+              to="/profile"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              My Profile
+            </Link>
+            <Link
+              to="/orders"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              My Orders
+            </Link>
+            <button
+              onClick={() => {
+                logout();
+                setIsMenuOpen(false);
+              }}
+              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+            >
+              Sign Out
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -171,21 +274,7 @@ export default function Layout({ children }: LayoutProps) {
 
               <div className="flex items-center space-x-4">
                 <CartButton />
-                <button className="text-gray-500 hover:text-gray-900 transition-colors">
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
-                </button>
+                <UserMenu />
               </div>
             </nav>
           </div>
