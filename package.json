@@ -15,30 +15,30 @@
   "license": "ISC",
   "author": "Lincoln Wisely",
   "private": true,
-  "workspaces": [
-    "client",
-    "server"
-  ],
   "scripts": {
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
-    "dev:server": "npm run dev --workspace=server",
-    "dev:client": "npm run start --workspace=client",
-    "build": "npm run build --workspace=client",
-    "start": "npm run start --workspace=server",
-    "seed": "npm run seed --workspace=server",
-    "install:all": "npm install && npm install --workspace=client && npm install --workspace=server",
-    "clean": "npm run clean:root && npm run clean:client && npm run clean:server",
-    "clean:root": "rm -rf node_modules package-lock.json",
-    "clean:client": "rm -rf client/node_modules client/package-lock.json",
-    "clean:server": "rm -rf server/node_modules server/package-lock.json"
+    "preinstall": "npx only-allow pnpm",
+    "dev": "concurrently \"pnpm run dev:server\" \"pnpm run dev:client\"",
+    "dev:server": "pnpm --filter server dev",
+    "dev:client": "pnpm --filter client start",
+    "build": "pnpm run build --filter client",
+    "start": "pnpm run start --filter server",
+    "seed": "pnpm run seed --filter server",
+    "setup-users": "pnpm run setup-users --filter server",
+    "setup": "pnpm run seed --filter server && pnpm run setup-users --filter server",
+    "install:all": "pnpm install",
+    "clean": "pnpm run clean:root && pnpm run clean:client && pnpm run clean:server",
+    "clean:root": "rm -rf node_modules pnpm-lock.yaml",
+    "clean:client": "rm -rf client/node_modules client/pnpm-lock.yaml",
+    "clean:server": "rm -rf server/node_modules server/pnpm-lock.yaml"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
   },
   "engines": {
     "node": ">=16.0.0",
-    "npm": ">=8.0.0"
+    "pnpm": ">=8.0.0"
   },
+  "packageManager": "pnpm@9.0.0",
   "dependencies": {
     "@types/react": "^19.1.9"
   }
