@@ -52,8 +52,9 @@ function UserMenu() {
     }
 
     if (isMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [isMenuOpen]);
 
@@ -98,7 +99,7 @@ function UserMenu() {
           />
         </svg>
         <span className="hidden sm:inline">
-          {state.user?.firstName || 'Account'}
+          {state.user?.firstName || "Account"}
         </span>
       </button>
 
@@ -168,14 +169,14 @@ export default function Layout({ children }: LayoutProps) {
             <div className="flex items-center">
               <Link
                 to="/"
-                className="text-xl font-semibold text-gray-900 hover:underline"
+                className="md:text-xl font-semibold text-gray-900 hover:underline"
               >
                 Sharon Wisely Jewelry
               </Link>
             </div>
 
             {/* Search Bar */}
-            <div className="flex-1 max-w-lg mx-8">
+            <div className="flex-1 max-w-lg mx-8 hidden md:block">
               <form onSubmit={handleSearch} className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <svg
@@ -225,7 +226,7 @@ export default function Layout({ children }: LayoutProps) {
               </Link>
 
               {/* Category Dropdown */}
-              <div className="relative group">
+              <div className="relative group hidden md:block">
                 <button className="text-gray-500 hover:text-gray-900 transition-colors flex items-center">
                   Categories
                   <svg
