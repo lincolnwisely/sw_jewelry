@@ -46,14 +46,29 @@ export const router = createBrowserRouter([
         element: (
           <div className="text-center py-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Welcome to Sharon Wisely Jewelry
+              Sharon Wisely Jewelry
             </h1>
             <br/>
             <p className="text-lg text-gray-600 m-4 p-4">
-              I make handcrafted necklaces, earring, rings and bracelets out of copper, sterling silver and gemstones.</p>
+              Handcrafted necklaces, earring, rings and bracelets out of copper, sterling silver and gemstones.</p>
               
-              <p className='text-lg text-gray-600 m-4 p-4'> This site is in-progress, but check out some of my previous sales on&nbsp; 
-                <a className="underline hover:text-blue-600 dark:hover:text-blue-600" href="https://www.etsy.com/shop/SharonWiselyJewelry" target="_blank" rel="noreferrer noopener">my Etsy Shop</a>.</p>
+              <p className='text-lg text-gray-600 m-4 p-4'> This site is in-progress. &nbsp; 
+                <a className="underline hover:" href="https://www.etsy.com/shop/SharonWiselyJewelry" target="_blank" rel="noreferrer noopener">View past sales on Etsy</a>.</p>
+              
+              {/* Photo Gallery */}
+              <div className="mt-8 px-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-w-6xl mx-auto">
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num) => (
+                    <div key={num} className="aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
+                      <img
+                        src={`/images/${num}.jpeg`}
+                        alt={`Jewelry piece ${num}`}
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
           </div>
         ),
       },
@@ -81,18 +96,8 @@ function App() {
   return (
     <div className="App p-4">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+
+    
       </header>
       <Routes>
       <Route path="/inventory/" component={Inventory}/>

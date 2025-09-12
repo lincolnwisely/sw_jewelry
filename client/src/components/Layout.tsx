@@ -69,7 +69,7 @@ function UserMenu() {
         </Link>
         <Link
           to="/register"
-          className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors"
+          className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors"
         >
           Sign Up
         </Link>
@@ -101,9 +101,9 @@ function UserMenu() {
           {state.user?.firstName || 'Account'}
         </span>
       </button>
-      
+
       {isMenuOpen && (
-        <div 
+        <div
           ref={menuRef}
           className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50"
         >
@@ -113,7 +113,7 @@ function UserMenu() {
             </div>
             <Link
               to="/profile"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-purple-600"
               onClick={() => setIsMenuOpen(false)}
             >
               My Profile
@@ -168,7 +168,7 @@ export default function Layout({ children }: LayoutProps) {
             <div className="flex items-center">
               <Link
                 to="/"
-                className="text-xl font-semibold text-gray-900 hover:text-purple-600 transition-colors"
+                className="text-xl font-semibold text-gray-900 hover:underline"
               >
                 Sharon Wisely Jewelry
               </Link>
@@ -207,7 +207,7 @@ export default function Layout({ children }: LayoutProps) {
                 to="/"
                 className={`transition-colors ${
                   isActive("/")
-                    ? "text-purple-600 font-medium"
+                    ? "text-black underline font-medium"
                     : "text-gray-500 hover:text-gray-900"
                 }`}
               >
@@ -217,7 +217,7 @@ export default function Layout({ children }: LayoutProps) {
                 to="/inventory"
                 className={`transition-colors ${
                   isActive("/inventory")
-                    ? "text-purple-600 font-medium"
+                    ? "text-black underline font-medium"
                     : "text-gray-500 hover:text-gray-900"
                 }`}
               >
@@ -282,7 +282,7 @@ export default function Layout({ children }: LayoutProps) {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 grow">
+      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 grow content-center">
         {children || <Outlet />}
       </main>
 
