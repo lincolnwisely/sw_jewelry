@@ -70,7 +70,7 @@ export default function Detail(props: DetailProps = {}) {
 
   const getCategoryColor = (category: string) => {
     const colors = {
-      rings: "bg-purple-100 text-purple-800",
+      rings: "bg-gray-100 text-gray-800",
       bracelets: "bg-blue-100 text-blue-800",
       necklaces: "bg-pink-100 text-pink-800",
       earrings: "bg-yellow-100 text-yellow-800",
@@ -106,7 +106,7 @@ export default function Detail(props: DetailProps = {}) {
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Breadcrumb */}
       <nav className="mb-6">
-        <Link to="/inventory" className="text-purple-600 hover:text-purple-800">
+        <Link to="/inventory" className="text-black hover:text-gray-800">
           ← Back to Collection
         </Link>
       </nav>
@@ -173,7 +173,7 @@ export default function Detail(props: DetailProps = {}) {
               onClick={handleAddToCart}
               className={`w-full py-3 px-6 rounded-lg text-lg font-medium transition-colors ${
                 item.inStock > 0
-                  ? "bg-purple-600 text-white hover:bg-purple-700"
+                  ? "bg-black text-white hover:bg-gray-800"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
               disabled={item.inStock === 0}
@@ -181,7 +181,7 @@ export default function Detail(props: DetailProps = {}) {
               {item.inStock > 0 ? "Add to Cart" : "Out of Stock"}
             </button>
 
-            <button className="w-full py-3 px-6 rounded-lg border border-purple-600 text-purple-600 hover:bg-purple-50 text-lg font-medium transition-colors">
+            <button className="w-full py-3 px-6 rounded-lg border border-black text-black hover:bg-gray-50 text-lg font-medium transition-colors">
               Add to Wishlist
             </button>
           </div>

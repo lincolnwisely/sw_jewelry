@@ -71,7 +71,7 @@ export default function CategoryPage() {
           </h2>
           <Link
             to="/inventory"
-            className="text-purple-600 hover:text-purple-800"
+            className="text-black hover:text-gray-800"
           >
             Return to Collection
           </Link>
@@ -102,7 +102,7 @@ export default function CategoryPage() {
     <Page title={categoryData.title}>
       {/* Breadcrumb */}
       <nav className="mb-6">
-        <Link to="/inventory" className="text-purple-600 hover:text-purple-800">
+        <Link to="/inventory" className="text-black hover:text-gray-800">
           ← Back to Collection
         </Link>
       </nav>

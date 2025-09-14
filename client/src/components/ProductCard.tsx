@@ -37,7 +37,7 @@ export default function ProductCard({ item }: ProductCardProps) {
 
   const getCategoryColor = (category: string) => {
     const colors = {
-      rings: "bg-purple-100 text-purple-800",
+      rings: "bg-gray-100 text-gray-800",
       bracelets: "bg-blue-100 text-blue-800",
       necklaces: "bg-pink-100 text-pink-800",
       earrings: "bg-yellow-100 text-yellow-800",
@@ -73,7 +73,7 @@ export default function ProductCard({ item }: ProductCardProps) {
           {getStockBadge(item.inStock)}
         </div>
 
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors">
+        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-black transition-colors">
           {item.title}
         </h3>
 

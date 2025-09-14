@@ -30,7 +30,7 @@ function CartButton() {
         />
       </svg>
       {totalItems > 0 && (
-        <span className="absolute -top-2 -right-2 bg-purple-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+        <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
           {totalItems > 99 ? "99+" : totalItems}
         </span>
       )}
@@ -114,14 +114,14 @@ function UserMenu() {
             </div>
             <Link
               to="/profile"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-purple-600"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
               onClick={() => setIsMenuOpen(false)}
             >
               My Profile
             </Link>
             <Link
               to="/orders"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
               onClick={() => setIsMenuOpen(false)}
             >
               My Orders
@@ -131,7 +131,7 @@ function UserMenu() {
                 logout();
                 setIsMenuOpen(false);
               }}
-              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
             >
               Sign Out
             </button>
@@ -198,7 +198,7 @@ export default function Layout({ children }: LayoutProps) {
                   placeholder="Search jewelry..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
                 />
               </form>
             </div>
@@ -247,25 +247,25 @@ export default function Layout({ children }: LayoutProps) {
                   <div className="py-1">
                     <Link
                       to="/category/rings"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
                     >
                       Rings
                     </Link>
                     <Link
                       to="/category/necklaces"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
                     >
                       Necklaces
                     </Link>
                     <Link
                       to="/category/bracelets"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
                     >
                       Bracelets
                     </Link>
                     <Link
                       to="/category/earrings"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
                     >
                       Earrings
                     </Link>
