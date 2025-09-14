@@ -133,7 +133,7 @@ export default function RegisterForm({
                 required
                 value={formData.firstName}
                 onChange={handleChange}
-                className={`mt-1 appearance-none relative block w-full px-3 py-2 border rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm ${
+                className={`mt-1 appearance-none relative block w-full px-3 py-2 border rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-black focus:border-black focus:z-10 sm:text-sm ${
                   formErrors.firstName ? "border-red-300" : "border-gray-300"
                 }`}
                 placeholder="First name"
@@ -161,7 +161,7 @@ export default function RegisterForm({
                 required
                 value={formData.lastName}
                 onChange={handleChange}
-                className={`mt-1 appearance-none relative block w-full px-3 py-2 border rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm ${
+                className={`mt-1 appearance-none relative block w-full px-3 py-2 border rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-black focus:border-black focus:z-10 sm:text-sm ${
                   formErrors.lastName ? "border-red-300" : "border-gray-300"
                 }`}
                 placeholder="Last name"
@@ -189,7 +189,7 @@ export default function RegisterForm({
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className={`mt-1 appearance-none relative block w-full px-3 py-2 border rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm ${
+                className={`mt-1 appearance-none relative block w-full px-3 py-2 border rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-black focus:border-black focus:z-10 sm:text-sm ${
                   formErrors.email ? "border-red-300" : "border-gray-300"
                 }`}
                 placeholder="Email address"
@@ -216,7 +216,7 @@ export default function RegisterForm({
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className={`appearance-none relative block w-full px-3 py-2 pr-10 border rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm ${
+                  className={`appearance-none relative block w-full px-3 py-2 pr-10 border rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-black focus:border-black focus:z-10 sm:text-sm ${
                     formErrors.password ? "border-red-300" : "border-gray-300"
                   }`}
                   placeholder="Password (min. 8 characters)"
@@ -286,7 +286,7 @@ export default function RegisterForm({
                 required
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className={`mt-1 appearance-none relative block w-full px-3 py-2 border rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm ${
+                className={`mt-1 appearance-none relative block w-full px-3 py-2 border rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-black focus:border-black focus:z-10 sm:text-sm ${
                   formErrors.confirmPassword
                     ? "border-red-300"
                     : "border-gray-300"
@@ -305,7 +305,7 @@ export default function RegisterForm({
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Creating account..." : "Create account"}
             </button>
@@ -316,7 +316,7 @@ export default function RegisterForm({
               Already have an account?{" "}
               <Link
                 to="/login"
-                className="font-medium text-purple-600 hover:text-purple-500"
+                className="font-medium text-black hover:text-gray-800"
               >
                 Sign in here
               </Link>

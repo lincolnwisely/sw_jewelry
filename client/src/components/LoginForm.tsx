@@ -109,7 +109,7 @@ export default function LoginForm({
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className={`mt-1 appearance-none relative block w-full px-3 py-2 border rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm ${
+                className={`mt-1 appearance-none relative block w-full px-3 py-2 border rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-black focus:border-black focus:z-10 sm:text-sm ${
                   formErrors.email ? "border-red-300" : "border-gray-300"
                 }`}
                 placeholder="Email address"
@@ -136,7 +136,7 @@ export default function LoginForm({
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className={`appearance-none relative block w-full px-3 py-2 pr-10 border rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm ${
+                  className={`appearance-none relative block w-full px-3 py-2 pr-10 border rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-black focus:border-black focus:z-10 sm:text-sm ${
                     formErrors.password ? "border-red-300" : "border-gray-300"
                   }`}
                   placeholder="Password"
@@ -200,7 +200,7 @@ export default function LoginForm({
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+                className="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
               />
               <label
                 htmlFor="remember-me"
@@ -213,7 +213,7 @@ export default function LoginForm({
             <div className="text-sm">
               <Link
                 to="/forgot-password"
-                className="font-medium text-purple-600 hover:text-purple-500"
+                className="font-medium text-black hover:text-gray-800"
               >
                 Forgot your password?
               </Link>
@@ -224,7 +224,7 @@ export default function LoginForm({
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Signing in..." : "Sign in"}
             </button>
@@ -235,7 +235,7 @@ export default function LoginForm({
               Don't have an account?{" "}
               <Link
                 to="/register"
-                className="font-medium text-purple-600 hover:text-purple-500"
+                className="font-medium text-black hover:text-gray-800"
               >
                 Create one here
               </Link>
