@@ -6,6 +6,7 @@ import CategoryPage from './components/CategoryPage.tsx';
 import { createBrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Inventory from './components/inventory.tsx';
 import RegisterForm from './components/RegisterForm.tsx';
+import LoginPage from './components/LoginPage.tsx';
 import { useAuth } from './context/AuthContext.tsx';
 
 // Register page component that can use hooks
@@ -85,8 +86,12 @@ export const router = createBrowserRouter([
         element: <CategoryPage />,
       },
       {
-        path: '/register', 
+        path: '/register',
         element: <RegisterPage />
+      },
+      {
+        path: '/login',
+        element: <LoginPage />
       }
     ],
   },
