@@ -144,6 +144,8 @@ function UserMenu() {
 
 export default function Layout({ children }: LayoutProps) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -151,6 +153,7 @@ export default function Layout({ children }: LayoutProps) {
     e.preventDefault();
     if (searchTerm.trim()) {
       navigate(`/inventory?search=${encodeURIComponent(searchTerm.trim())}`);
+      setIsMobileMenuOpen(false); // Close mobile menu after search
     }
   };
 
@@ -160,50 +163,31 @@ export default function Layout({ children }: LayoutProps) {
     return false;
   };
 
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+    setIsCategoryOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white shadow-sm border-b relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
+            {/* Logo/Brand */}
             <div className="flex items-center">
               <Link
                 to="/"
-                className="md:text-xl font-semibold text-gray-900 hover:underline"
+                className="text-lg sm:text-xl font-semibold text-gray-900 hover:underline"
+                onClick={closeMobileMenu}
               >
-                Sharon Wisely Jewelry
+                <span className="hidden sm:inline">Sharon Wisely Jewelry</span>
+                <span className="sm:hidden">SW Jewelry</span>
               </Link>
             </div>
 
-            {/* Search Bar */}
-            <div className="flex-1 max-w-lg mx-8 hidden md:block">
-              <form onSubmit={handleSearch} className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg
-                    className="h-5 w-5 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
-                </div>
-                <input
-                  type="search"
-                  placeholder="Search jewelry..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-                />
-              </form>
-            </div>
-
-            <nav className="flex items-center space-x-8">
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center space-x-8">
               <Link
                 to="/"
                 className={`transition-colors ${
@@ -225,8 +209,8 @@ export default function Layout({ children }: LayoutProps) {
                 Collection
               </Link>
 
-              {/* Category Dropdown */}
-              <div className="relative group hidden md:block">
+              {/* Desktop Category Dropdown */}
+              <div className="relative group">
                 <button className="text-gray-500 hover:text-gray-900 transition-colors flex items-center">
                   Categories
                   <svg
@@ -272,14 +256,197 @@ export default function Layout({ children }: LayoutProps) {
                   </div>
                 </div>
               </div>
+            </nav>
 
-              <div className="flex items-center space-x-4">
-                <CartButton />
+            {/* Desktop Search */}
+            <div className="hidden md:block flex-1 max-w-lg mx-8">
+              <form onSubmit={handleSearch} className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg
+                    className="h-5 w-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  type="search"
+                  placeholder="Search jewelry..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                />
+              </form>
+            </div>
+
+            {/* Right side: Cart, User, Mobile Menu */}
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <CartButton />
+              <div className="hidden lg:block">
                 <UserMenu />
               </div>
-            </nav>
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="lg:hidden p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+                aria-expanded={isMobileMenuOpen}
+                aria-label="Toggle menu"
+              >
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  {isMobileMenuOpen ? (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  ) : (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  )}
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden border-t border-gray-200 bg-white">
+            <div className="px-4 py-4 space-y-4">
+              {/* Mobile Search */}
+              <form onSubmit={handleSearch} className="relative md:hidden">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg
+                    className="h-5 w-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  type="search"
+                  placeholder="Search jewelry..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                />
+              </form>
+
+              {/* Mobile Navigation Links */}
+              <div className="space-y-1">
+                <Link
+                  to="/"
+                  className={`block px-3 py-2 rounded-md text-base font-medium ${
+                    isActive("/")
+                      ? "text-black bg-gray-100"
+                      : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                  }`}
+                  onClick={closeMobileMenu}
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/inventory"
+                  className={`block px-3 py-2 rounded-md text-base font-medium ${
+                    isActive("/inventory")
+                      ? "text-black bg-gray-100"
+                      : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                  }`}
+                  onClick={closeMobileMenu}
+                >
+                  Collection
+                </Link>
+
+                {/* Mobile Categories */}
+                <div>
+                  <button
+                    onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                  >
+                    Categories
+                    <svg
+                      className={`h-5 w-5 transform transition-transform ${
+                        isCategoryOpen ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+                  {isCategoryOpen && (
+                    <div className="ml-4 mt-1 space-y-1">
+                      <Link
+                        to="/category/rings"
+                        className="block px-3 py-2 rounded-md text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                        onClick={closeMobileMenu}
+                      >
+                        Rings
+                      </Link>
+                      <Link
+                        to="/category/necklaces"
+                        className="block px-3 py-2 rounded-md text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                        onClick={closeMobileMenu}
+                      >
+                        Necklaces
+                      </Link>
+                      <Link
+                        to="/category/bracelets"
+                        className="block px-3 py-2 rounded-md text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                        onClick={closeMobileMenu}
+                      >
+                        Bracelets
+                      </Link>
+                      <Link
+                        to="/category/earrings"
+                        className="block px-3 py-2 rounded-md text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                        onClick={closeMobileMenu}
+                      >
+                        Earrings
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Mobile User Menu */}
+              <div className="pt-4 border-t border-gray-200">
+                <UserMenu />
+              </div>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Main Content */}

@@ -45,31 +45,49 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: (
-          <div className="text-center py-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Sharon Wisely Jewelry
-            </h1>
-            <br/>
-            <p className="text-lg text-gray-600 m-4 p-4">
-              Handcrafted necklaces, earring, rings and bracelets out of copper, sterling silver and gemstones.</p>
-              
-              <p className='text-lg text-gray-600 m-4 p-4'> This site is in-progress. &nbsp; 
-                <a className="underline hover:" href="https://www.etsy.com/shop/SharonWiselyJewelry" target="_blank" rel="noreferrer noopener">View past sales on Etsy</a>.</p>
-              
-              {/* Photo Gallery */}
-              <div className="mt-8 px-4">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-w-6xl mx-auto">
-                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num) => (
-                    <div key={num} className="aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
-                      <img
-                        src={`/images/${num}.jpeg`}
-                        alt={`Jewelry piece ${num}`}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
-                      />
-                    </div>
-                  ))}
-                </div>
+          <div className="text-center py-6 sm:py-12 px-4 sm:px-6">
+            {/* Hero Section */}
+            <div className="max-w-4xl mx-auto">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-2 sm:mb-4">
+                Sharon Wisely Jewelry
+              </h1>
+
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 mx-auto max-w-2xl px-2 sm:px-4 mb-4 sm:mb-6">
+                Handcrafted necklaces, earrings, rings and bracelets out of copper, sterling silver and gemstones.
+              </p>
+
+              <p className="text-xs sm:text-sm md:text-base text-gray-600 mx-auto max-w-xl px-2 sm:px-4 mb-6 sm:mb-8">
+                This site is in-progress.{" "}
+                <a
+                  className="underline hover:text-black transition-colors"
+                  href="https://www.etsy.com/shop/SharonWiselyJewelry"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  View past sales on Etsy
+                </a>
+                .
+              </p>
+            </div>
+
+            {/* Photo Gallery */}
+            <div className="mt-6 sm:mt-8 px-2 sm:px-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 max-w-7xl mx-auto">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num) => (
+                  <div
+                    key={num}
+                    className="aspect-square overflow-hidden rounded-md sm:rounded-lg shadow-sm sm:shadow-md hover:shadow-lg transition-shadow duration-200 bg-gray-100"
+                  >
+                    <img
+                      src={`/images/${num}.jpeg`}
+                      alt={`Jewelry piece ${num}`}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
               </div>
+            </div>
           </div>
         ),
       },
