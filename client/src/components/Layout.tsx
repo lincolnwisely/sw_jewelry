@@ -3,6 +3,7 @@ import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext.tsx";
 import Cart from "./Cart.tsx";
 import { useAuth } from "../context/AuthContext.tsx";
+import TokenExpirationHandler from "./TokenExpirationHandler.tsx";
 interface LayoutProps {
   children?: ReactNode;
 }
@@ -465,6 +466,9 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* Cart Sliding Panel */}
       <Cart />
+
+      {/* Token Expiration Handler */}
+      <TokenExpirationHandler />
     </div>
   );
 }

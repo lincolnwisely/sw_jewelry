@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { API_ENDPOINTS, apiCall } from '../config/api';
+import { API_ENDPOINTS, apiCall, tokenUtils } from '../config/api';
 
 interface User {
   _id: string;
@@ -107,6 +107,7 @@ interface AuthContextType {
   clearError: () => void;
   updateUser: (userData: Partial<User>) => void;
   checkAuthStatus: () => Promise<void>;
+  isTokenExpired: () => boolean;
 }
 
 interface RegisterData {
@@ -128,6 +129,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkAuthStatus();
   }, []);
 
+  // Set up automatic token expiration check
+  useEffect(() => {
+    if (!state.token) return;
+
+    const timeUntilExpiration = tokenUtils.getTimeUntilExpiration(state.token);
+
+    if (timeUntilExpiration <= 0) {
+      // Token is already expired
+      dispatch({ type: 'LOGOUT' });
+      return;
+    }
+
+    // Set timeout to automatically logout when token expires
+    const timeoutId = setTimeout(() => {
+      console.log('Token expired automatically, logging out...');
+      dispatch({ type: 'LOGOUT' });
+    }, timeUntilExpiration);
+
+    return () => clearTimeout(timeoutId);
+  }, [state.token]);
+
   // Store token in localStorage when it changes
   useEffect(() => {
     if (state.token) {
@@ -140,8 +162,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const checkAuthStatus = async () => {
     try {
       const storedToken = localStorage.getItem(AUTH_TOKEN_KEY);
-      
+
       if (!storedToken) {
+        dispatch({ type: 'SET_LOADING', payload: false });
+        return;
+      }
+
+      // Check if token is expired before making API call
+      if (tokenUtils.isTokenExpired(storedToken)) {
+        console.log('Token expired, logging out...');
+        localStorage.removeItem(AUTH_TOKEN_KEY);
+        dispatch({ type: 'LOGOUT' });
         dispatch({ type: 'SET_LOADING', payload: false });
         return;
       }
@@ -167,8 +198,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.removeItem(AUTH_TOKEN_KEY);
         dispatch({ type: 'SET_LOADING', payload: false });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Auth check failed:', error);
+
+      // Handle specific expiration errors
+      if (error.message === 'EXPIRED_TOKEN' || error.message === 'UNAUTHORIZED') {
+        dispatch({ type: 'LOGOUT' });
+      }
+
       localStorage.removeItem(AUTH_TOKEN_KEY);
       dispatch({ type: 'SET_LOADING', payload: false });
     }
@@ -263,6 +300,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'UPDATE_USER', payload: userData });
   };
 
+  const isTokenExpired = () => {
+    return tokenUtils.isTokenExpired(state.token);
+  };
+
   const contextValue: AuthContextType = {
     state,
     login,
@@ -270,7 +311,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     logout,
     clearError,
     updateUser,
-    checkAuthStatus
+    checkAuthStatus,
+    isTokenExpired
   };
 
   return (

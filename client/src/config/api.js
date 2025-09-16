@@ -32,9 +32,61 @@ export const API_ENDPOINTS = {
   }
 };
 
-// Helper function for API calls
+// JWT token utilities
+export const tokenUtils = {
+  // Check if token is expired
+  isTokenExpired: (token) => {
+    if (!token) return true;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const currentTime = Date.now() / 1000;
+      return payload.exp < currentTime;
+    } catch (error) {
+      console.error('Error parsing token:', error);
+      return true;
+    }
+  },
+
+  // Get token expiration date
+  getTokenExpiration: (token) => {
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return new Date(payload.exp * 1000);
+    } catch (error) {
+      console.error('Error parsing token:', error);
+      return null;
+    }
+  },
+
+  // Get time until token expires (in milliseconds)
+  getTimeUntilExpiration: (token) => {
+    const expiration = tokenUtils.getTokenExpiration(token);
+    if (!expiration) return 0;
+
+    return expiration.getTime() - Date.now();
+  }
+};
+
+// Helper function for API calls with automatic token handling
 export const apiCall = async (endpoint, options = {}) => {
   try {
+    // Get token from localStorage for protected routes
+    const token = localStorage.getItem('sw_jewelry_token');
+
+    // Check if we have a token and if it's expired
+    if (token && tokenUtils.isTokenExpired(token)) {
+      // Clear expired token
+      localStorage.removeItem('sw_jewelry_token');
+
+      // Trigger logout if this is a protected route
+      if (options.headers?.Authorization || endpoint.includes('/auth/me')) {
+        throw new Error('EXPIRED_TOKEN');
+      }
+    }
+
     const response = await fetch(endpoint, {
       headers: {
         'Content-Type': 'application/json',
@@ -42,6 +94,13 @@ export const apiCall = async (endpoint, options = {}) => {
       },
       ...options,
     });
+
+    // Handle 401 Unauthorized responses
+    if (response.status === 401) {
+      // Clear any stored token
+      localStorage.removeItem('sw_jewelry_token');
+      throw new Error('UNAUTHORIZED');
+    }
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
