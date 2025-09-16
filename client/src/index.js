@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './App';
@@ -13,9 +12,7 @@ root.render(
   <React.StrictMode>
     <AuthProvider>
       <CartProvider>
-        <RouterProvider router={router}>
-          <App />
-        </RouterProvider>
+        <RouterProvider router={router} />
       </CartProvider>
     </AuthProvider>
   </React.StrictMode>

@@ -45,6 +45,7 @@ const initialState: AuthState = {
 };
 
 function authReducer(state: AuthState, action: AuthAction): AuthState {
+  console.log('Auth reducer - action:', action.type, action);
   switch (action.type) {
     case 'AUTH_START':
       return {
@@ -53,6 +54,11 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
         error: null
       };
     case 'AUTH_SUCCESS':
+      console.log('AUTH_SUCCESS reducer - setting auth state:', {
+        user: action.payload.user,
+        token: action.payload.token ? 'exists' : 'null',
+        isAuthenticated: true
+      });
       return {
         ...state,
         user: action.payload.user,
@@ -152,25 +158,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Store token in localStorage when it changes
   useEffect(() => {
+    console.log('Token useEffect - state.token:', state.token ? 'exists' : 'null/undefined');
     if (state.token) {
       localStorage.setItem(AUTH_TOKEN_KEY, state.token);
-    } else {
+    } else if (!state.loading) {
+      // Only remove token if we're not still loading (prevents removing valid tokens during initial load)
+      console.log('Token useEffect - Removing token from localStorage because state.token is:', state.token);
       localStorage.removeItem(AUTH_TOKEN_KEY);
     }
-  }, [state.token]);
+  }, [state.token, state.loading]);
 
   const checkAuthStatus = async () => {
     try {
+      console.log('checkAuthStatus - Starting auth check');
       const storedToken = localStorage.getItem(AUTH_TOKEN_KEY);
+      console.log('checkAuthStatus - Stored token:', storedToken ? 'exists' : 'null');
 
       if (!storedToken) {
+        console.log('checkAuthStatus - No token found, setting loading false');
         dispatch({ type: 'SET_LOADING', payload: false });
         return;
       }
 
       // Check if token is expired before making API call
       if (tokenUtils.isTokenExpired(storedToken)) {
-        console.log('Token expired, logging out...');
+        console.log('checkAuthStatus - Token expired, logging out. Token:', storedToken.substring(0, 20) + '...');
         localStorage.removeItem(AUTH_TOKEN_KEY);
         dispatch({ type: 'LOGOUT' });
         dispatch({ type: 'SET_LOADING', payload: false });
@@ -186,6 +198,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
 
       if (response.success && response.data?.user) {
+        console.log('checkAuthStatus - Auth success, user:', response.data.user);
         dispatch({
           type: 'AUTH_SUCCESS',
           payload: {
@@ -195,6 +208,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
       } else {
         // Invalid token
+        console.log('checkAuthStatus - Invalid token response:', response);
         localStorage.removeItem(AUTH_TOKEN_KEY);
         dispatch({ type: 'SET_LOADING', payload: false });
       }
@@ -223,7 +237,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify({ email, password })
       });
 
+      console.log('Login response:', response);
+
       if (response.success && response.data?.user && response.data?.token) {
+        console.log('Login successful, storing token and user:', response.data.user);
+        localStorage.setItem(AUTH_TOKEN_KEY, response.data.token);
+
         dispatch({
           type: 'AUTH_SUCCESS',
           payload: {

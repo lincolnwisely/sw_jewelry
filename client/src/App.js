@@ -3,12 +3,15 @@ import './App.css';
 import Detail from './components/details.tsx';
 import Layout from './components/Layout.tsx';
 import CategoryPage from './components/CategoryPage.tsx';
-import { createBrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { createBrowserRouter, useNavigate } from 'react-router-dom';
 import Inventory from './components/inventory.tsx';
 import RegisterForm from './components/RegisterForm.tsx';
 import LoginPage from './components/LoginPage.tsx';
+import AdminRoute from './components/AdminRoute.tsx';
+import AdminLayout from './components/AdminLayout.tsx';
+import AdminDashboard from './components/AdminDashboard.tsx';
+import AdminInventory from './components/AdminInventory.tsx';
 import { useAuth } from './context/AuthContext.tsx';
-import { Analytics } from "@vercel/analytics/react";
 
 // Register page component that can use hooks
 function RegisterPage() {
@@ -111,6 +114,27 @@ export const router = createBrowserRouter([
       {
         path: '/login',
         element: <LoginPage />
+      },
+      {
+        path: "/admin",
+        element: (
+          <AdminRoute>
+            <AdminLayout />
+          </AdminRoute>
+        ),
+        children: [
+          {
+            path: "",
+            element: <AdminDashboard />
+          },
+          {
+            path: "inventory",
+            element: <AdminInventory />
+          },
+          // We'll add more admin routes here later
+          // { path: "orders", element: <AdminOrders /> },
+          // { path: "users", element: <AdminUsers /> },
+        ],
       }
     ],
   },
@@ -121,15 +145,8 @@ function App() {
     <div className="App p-4">
       <header className="App-header">
 
-    
+
       </header>
-      <Routes>
-      <Route path="/inventory/" component={Inventory}/>
-
-        <Route path="/inventory/:id" component={Detail}/>
-      </Routes>
-
-      <Analytics />
     </div>
   );
 }

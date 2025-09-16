@@ -4,6 +4,8 @@ import { useCart } from "../context/CartContext.tsx";
 import Cart from "./Cart.tsx";
 import { useAuth } from "../context/AuthContext.tsx";
 import TokenExpirationHandler from "./TokenExpirationHandler.tsx";
+import { Analytics } from "@vercel/analytics/react";
+// import AuthDebug from './AuthDebug';
 interface LayoutProps {
   children?: ReactNode;
 }
@@ -469,6 +471,9 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* Token Expiration Handler */}
       <TokenExpirationHandler />
+
+      {/* Analytics */}
+      <Analytics />
     </div>
   );
 }

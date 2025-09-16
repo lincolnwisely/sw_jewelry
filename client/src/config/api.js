@@ -79,6 +79,7 @@ export const apiCall = async (endpoint, options = {}) => {
     // Check if we have a token and if it's expired
     if (token && tokenUtils.isTokenExpired(token)) {
       // Clear expired token
+      console.log('apiCall - Token expired, removing from localStorage');
       localStorage.removeItem('sw_jewelry_token');
 
       // Trigger logout if this is a protected route
@@ -98,6 +99,7 @@ export const apiCall = async (endpoint, options = {}) => {
     // Handle 401 Unauthorized responses
     if (response.status === 401) {
       // Clear any stored token
+      console.log('apiCall - 401 Unauthorized, removing token from localStorage');
       localStorage.removeItem('sw_jewelry_token');
       throw new Error('UNAUTHORIZED');
     }
