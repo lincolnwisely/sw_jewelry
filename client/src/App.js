@@ -8,6 +8,7 @@ import Inventory from './components/inventory.tsx';
 import RegisterForm from './components/RegisterForm.tsx';
 import LoginPage from './components/LoginPage.tsx';
 import { useAuth } from './context/AuthContext.tsx';
+import { Analytics } from "@vercel/analytics/react";
 
 // Register page component that can use hooks
 function RegisterPage() {
@@ -128,7 +129,7 @@ function App() {
         <Route path="/inventory/:id" component={Detail}/>
       </Routes>
 
-      
+      <Analytics />
     </div>
   );
 }
