@@ -1,85 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { API_ENDPOINTS, apiCall } from '../config/api';
-
-interface InventoryItem {
-  _id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  images: string[];
-  inStock: boolean;
-  quantity?: number;
-  materials?: string[];
-  createdAt: string;
-}
+import { useInventory } from '../hooks/useInventory';
+import { useDeleteProduct } from '../hooks/useInventoryMutations';
+import { Item } from './types';
 
 const AdminInventory: React.FC = () => {
-  const [inventory, setInventory] = useState<InventoryItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // Replace manual state with TanStack Query hooks
+  const { data: inventory = [], isLoading: loading, error } = useInventory();
+  const deleteProductMutation = useDeleteProduct();
+
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
-
-  useEffect(() => {
-    fetchInventory();
-  }, []);
-
-  const fetchInventory = async () => {
-    try {
-      setLoading(true);
-      const token = localStorage.getItem('sw_jewelry_token');
-
-      const response = await apiCall(API_ENDPOINTS.INVENTORY, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.success) {
-        setInventory(response.data);
-      } else {
-        setError('Failed to load inventory');
-      }
-    } catch (error) {
-      console.error('Error fetching inventory:', error);
-      setError('Failed to load inventory');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDelete = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this item?')) {
       return;
     }
 
-    try {
-      const token = localStorage.getItem('sw_jewelry_token');
-
-      await apiCall(API_ENDPOINTS.INVENTORY_BY_ID(id), {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setInventory(inventory.filter(item => item._id !== id));
-    } catch (error) {
-      console.error('Error deleting item:', error);
-      alert('Failed to delete item');
-    }
+    deleteProductMutation.mutate(id, {
+      onSuccess: () => {
+        // Optional: Add success feedback
+        console.log('Product deleted successfully!');
+      },
+      onError: () => {
+        alert('Failed to delete item');
+      }
+    });
   };
 
   const filteredInventory = inventory.filter(item => {
-    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const itemName = item.name || item.title || '';
+    const matchesSearch = itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (item.description || '').toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = categoryFilter === 'all' || item.category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
 
-  const categories = Array.from(new Set(inventory.map(item => item.category)));
+  const categories = Array.from(new Set(inventory.map(item => item.category).filter(Boolean)));
 
   if (loading) {
     return (
@@ -92,9 +49,9 @@ const AdminInventory: React.FC = () => {
   if (error) {
     return (
       <div className="bg-red-50 border border-red-200 rounded-md p-4">
-        <p className="text-red-600">{error}</p>
+        <p className="text-red-600">{error?.message || 'Failed to load inventory'}</p>
         <button
-          onClick={fetchInventory}
+          onClick={() => window.location.reload()}
           className="mt-2 text-red-600 hover:text-red-800 underline"
         >
           Try again
@@ -228,22 +185,28 @@ const AdminInventory: React.FC = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-12 w-12">
-                          {item.images && item.images.length > 0 ? (
-                            <img
-                              className="h-12 w-12 rounded-lg object-cover"
-                              src={item.images[0]}
-                              alt={item.name}
-                            />
-                          ) : (
-                            <div className="h-12 w-12 rounded-lg bg-gray-200 flex items-center justify-center">
-                              <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                              </svg>
-                            </div>
-                          )}
+                          {(() => {
+                            const imageUrl = item.images && item.images.length > 0
+                              ? item.images[0]
+                              : item.image;
+
+                            return imageUrl ? (
+                              <img
+                                className="h-12 w-12 rounded-lg object-cover"
+                                src={imageUrl}
+                                alt={item.name || item.title}
+                              />
+                            ) : (
+                              <div className="h-12 w-12 rounded-lg bg-gray-200 flex items-center justify-center">
+                                <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                              </div>
+                            );
+                          })()}
                         </div>
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{item.name}</div>
+                          <div className="text-sm font-medium text-gray-900">{item.name || item.title}</div>
                           <div className="text-sm text-gray-500 truncate max-w-xs">
                             {item.description}
                           </div>
@@ -275,7 +238,7 @@ const AdminInventory: React.FC = () => {
                         Edit
                       </Link>
                       <button
-                        onClick={() => handleDelete(item._id)}
+                        onClick={() => handleDelete(item.id)}
                         className="text-red-600 hover:text-red-800"
                       >
                         Delete
