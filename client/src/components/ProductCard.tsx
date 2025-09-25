@@ -45,8 +45,11 @@ export default function ProductCard({ item }: ProductCardProps) {
     return (
       colors[category as keyof typeof colors] || "bg-gray-100 text-gray-800"
     );
+
   };
 
+
+  console.log('item', item);
   return (
     <Link
       to={`/inventory/${item.id}`}
@@ -54,7 +57,7 @@ export default function ProductCard({ item }: ProductCardProps) {
     >
       <div className="aspect-square overflow-hidden bg-gray-100">
         <img
-          src={item.image}
+          src={item?.images ? item?.images[0] : item?.image}
           alt={item.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
           loading="lazy"
