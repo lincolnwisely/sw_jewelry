@@ -1,38 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { API_ENDPOINTS, apiCall } from "../config/api";
 import ProductCard from "./ProductCard.tsx";
 import { Item } from "./types";
 import Page from "./Page.tsx";
+import { useInventory } from "../hooks/useInventory";
 
 export default function Inventory() {
-  const [inventory, setInventory] = useState<Item[] | null>(null);
+  // Replace manual state with useQuery hook
+  const { data: inventory, isLoading: loading, error } = useInventory();
+
   const [filteredInventory, setFilteredInventory] = useState<Item[] | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("name");
   const [searchParams] = useSearchParams();
 
   const searchTerm = searchParams.get("search") || "";
-
-  useEffect(() => {
-    const fetchInventory = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const data = await apiCall(API_ENDPOINTS.INVENTORY);
-        setInventory(data.data);
-      } catch (err) {
-        console.error("Error fetching items:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchInventory();
-  }, []);
 
   // Filter and search functionality
   useEffect(() => {
@@ -80,7 +62,7 @@ export default function Inventory() {
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>Error: {error?.message || 'Failed to load inventory'}</div>;
   }
 
   if (!inventory) {

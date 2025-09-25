@@ -1,6 +1,6 @@
 {
   "name": "sw_jewelry",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "e-commerce site for sharon wisely jewelry",
   "keywords": [
     "react",
@@ -20,7 +20,7 @@
     "dev": "concurrently \"pnpm run dev:server\" \"pnpm run dev:client\"",
     "dev:server": "pnpm --filter server dev",
     "dev:client": "pnpm --filter client start",
-    "build": "pnpm run build --filter client",
+    "build": "pnpm --filter client build",
     "start": "pnpm run start --filter server",
     "seed": "pnpm run seed --filter server",
     "setup-users": "pnpm run setup-users --filter server",
