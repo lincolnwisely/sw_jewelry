@@ -1,9 +1,7 @@
-import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { API_ENDPOINTS, apiCall } from "../config/api.js";
 import ProductCard from "./ProductCard.tsx";
-import { Item } from "./types";
 import Page from "./Page.tsx";
+import { useInventoryByCategory } from "../hooks/useInventory";
 
 const categoryInfo = {
   rings: {
@@ -34,33 +32,11 @@ const categoryInfo = {
 
 export default function CategoryPage() {
   const { category } = useParams<{ category: string }>();
-  const [items, setItems] = useState<Item[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+
+  // Replace manual fetch with useQuery hook
+  const { data: items = [], isLoading: loading, error } = useInventoryByCategory(category || '');
 
   const categoryData = categoryInfo[category as keyof typeof categoryInfo];
-  useEffect(() => {
-    const fetchCategoryItems = async () => {
-      if (!category) return;
-
-      try {
-        setLoading(true);
-        setError(null);
-
-        const data = await apiCall(
-          API_ENDPOINTS.INVENTORY_BY_CATEGORY(category)
-        );
-        setItems(data.data);
-      } catch (err: any) {
-        console.error("Error fetching category items:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCategoryItems();
-  }, [category]);
 
   if (!categoryData) {
     return (
@@ -93,7 +69,7 @@ export default function CategoryPage() {
   if (error) {
     return (
       <Page title={categoryData.title}>
-        <div className="text-center text-red-600">Error: {error}</div>
+        <div className="text-center text-red-600">Error: {error?.message || 'Failed to load category items'}</div>
       </Page>
     );
   }

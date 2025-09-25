@@ -10,6 +10,7 @@ import AdminRoute from './components/AdminRoute.tsx';
 import AdminLayout from './components/AdminLayout.tsx';
 import AdminDashboard from './components/AdminDashboard.tsx';
 import AdminInventory from './components/AdminInventory.tsx';
+import AddProduct from './components/AddProduct.tsx';
 import { useAuth } from './context/AuthContext.tsx';
 
 // Register page component that can use hooks
@@ -129,6 +130,10 @@ export const router = createBrowserRouter([
           {
             path: "inventory",
             element: <AdminInventory />
+          },
+          {
+            path: "inventory/new",
+            element: <AddProduct />
           },
           // We'll add more admin routes here later
           // { path: "orders", element: <AdminOrders /> },

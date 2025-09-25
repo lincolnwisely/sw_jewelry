@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // MongoDB connection configuration
 const username = process.env.MONGODB_USERNAME || 'lincolnwisely';
@@ -141,10 +141,22 @@ const createInventoryItem = async (req, res) => {
     
     const newItem = req.body;
     
-    // Validate required fields
-    const requiredFields = ['id', 'title', 'description', 'price', 'inStock', 'image', 'tags', 'category'];
-    const missingFields = requiredFields.filter(field => !newItem[field]);
-    
+    // Validate required fields (tags can be empty array, so check differently)
+    const requiredFields = ['id', 'title', 'description', 'price', 'inStock', 'category'];
+    const missingFields = requiredFields.filter(field =>
+      newItem[field] === undefined || newItem[field] === null || newItem[field] === ''
+    );
+
+    // Check tags separately (must be an array, can be empty)
+    if (!Array.isArray(newItem.tags)) {
+      missingFields.push('tags (must be an array)');
+    }
+
+    // Check for image(s) - either 'image' (legacy) or 'images' (new format) is required
+    if (!newItem.image && (!newItem.images || !Array.isArray(newItem.images) || newItem.images.length === 0)) {
+      missingFields.push('image or images');
+    }
+
     if (missingFields.length > 0) {
       return res.status(400).json({
         success: false,
@@ -273,8 +285,21 @@ const deleteInventoryItem = async (req, res) => {
     const { id } = req.params;
     const db = await getDatabase();
     const collection = db.collection('inventory');
-    
-    const result = await collection.deleteOne({ id });
+
+    // Try both _id (MongoDB) and id (custom) fields to be flexible
+    let result;
+
+    if (ObjectId.isValid(id)) {
+      // If it's a valid ObjectId, search by _id
+      console.log('Deleting by MongoDB _id:', id);
+      result = await collection.deleteOne({ _id: new ObjectId(id) });
+    } else {
+      // Otherwise, search by custom id field
+      console.log('Deleting by custom id:', id);
+      result = await collection.deleteOne({ id });
+    }
+
+    console.log('Delete result:', result);
     
     if (result.deletedCount === 0) {
       return res.status(404).json({
