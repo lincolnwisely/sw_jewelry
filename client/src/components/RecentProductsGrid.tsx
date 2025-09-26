@@ -45,7 +45,7 @@ export default function RecentProductsGrid() {
   }
 
   return (
-    <div className="mt-6 sm:mt-8 px-2 sm:px-4">
+    <div className="mt-6 sm:mt-8 sm:px-4">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
           {recentProducts.map((product: Item) => (
