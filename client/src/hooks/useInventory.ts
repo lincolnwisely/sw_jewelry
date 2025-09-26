@@ -28,3 +28,17 @@ export function useInventoryByCategory(category: string) {
     enabled: !!category, // Only run query if category is provided
   });
 }
+
+// Custom hook for fetching inventory by id
+export function useInventoryById(id: string) {
+  return useQuery({
+    queryKey: ['inventory', 'id', id], // Hierarchical cache key
+    queryFn: async (): Promise<Item> => {
+      const response = await apiCall(`${API_ENDPOINTS.INVENTORY}/${id}`);
+      return response.data;
+    },
+    staleTime: 5 * 60 * 1000, // Data stays fresh for 5 minutes
+    gcTime: 10 * 60 * 1000,   // Keep in cache for 10 minutes
+    enabled: !!id, // Only run query if category is provided
+  });
+}

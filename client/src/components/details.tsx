@@ -1,57 +1,67 @@
-import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { API_ENDPOINTS, apiCall } from "../config/api";
 import { Item } from "./types";
 import { useCart } from "../context/CartContext.tsx";
+import { useInventoryById } from "../hooks/useInventory";
 
 interface DetailProps {
   item?: Item;
 }
 
 export default function Detail(props: DetailProps = {}) {
-  const _item = props.item;
-  //get id from route to fetch itemif not provided in props
+  const { item: _item } = props;
   const { id } = useParams();
-  const isPreview = _item;
+  const isPreview = !!_item;
   const { addToCart, setCartOpen } = useCart();
 
-  const [item, setItem] = useState(_item ? _item : null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // Use the hook only if we don't have a preview item
+  const { data: fetchedItem = null, isLoading: loading, error } = useInventoryById(
+    isPreview ? '' : (id || '')
+  );
 
-  useEffect(() => {
-    const fetchItem = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  // Use the preview item if available, otherwise use the fetched item
+  const item = _item || fetchedItem;
 
-        const data = await apiCall(API_ENDPOINTS.INVENTORY_BY_ID(id));
-        setItem(data.data);
-      } catch (err) {
-        console.error("Error fetching item:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (!item || !item._id) {
-      fetchItem();
-    } else {
-      setLoading(false);
-    }
-  }, [id, item]);
-
-  if (loading) {
-    return <div>Loading...</div>;
+  if (loading && !isPreview) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black mx-auto"></div>
+          <p className="mt-2 text-gray-600">Loading product details...</p>
+        </div>
+      </div>
+    );
+  }
+  if (error && !isPreview) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="text-center">
+          <div className="text-red-600 mb-4">Error loading product</div>
+          <p className="text-gray-600">{error?.message || 'Something went wrong'}</p>
+          <Link
+            to="/inventory"
+            className="mt-4 inline-block text-black hover:text-gray-800"
+          >
+            ← Back to Collection
+          </Link>
+        </div>
+      </div>
+    );
   }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (!item) {
-    return <div>Item not found</div>;
+  if (!item && !isPreview) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="text-center">
+          <div className="text-gray-600 mb-4">Product not found</div>
+          <Link
+            to="/inventory"
+            className="text-black hover:text-gray-800"
+          >
+            ← Back to Collection
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   const formatPrice = (price: number) => {
@@ -103,7 +113,6 @@ export default function Detail(props: DetailProps = {}) {
     );
   }
   
-  console.log('item', item)
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
