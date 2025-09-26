@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCreateProduct } from '../hooks/useInventoryMutations';
 import ImageUpload from './ImageUpload';
-
-const CATEGORIES = ['rings', 'bracelets', 'necklaces', 'earrings', 'other'];
+import { getCategoriesArray } from '../constants/categories';
 
 const AddProduct: React.FC = () => {
   const navigate = useNavigate();
   const createProductMutation = useCreateProduct();
+  const categories = getCategoriesArray();
 
   const [formData, setFormData] = useState({
     id: '',
     title: '',
     description: '',
     price: '',
-    category: 'rings',
+    category: categories.length > 0 ? categories[0].name : 'rings',
     inStock: '',
     tags: '',
     materials: '',
@@ -134,9 +134,9 @@ const AddProduct: React.FC = () => {
                 onChange={handleInputChange}
                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
               >
-                {CATEGORIES.map(category => (
-                  <option key={category} value={category}>
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                {categories.map(category => (
+                  <option key={category.name} value={category.name}>
+                    {category.title}
                   </option>
                 ))}
               </select>

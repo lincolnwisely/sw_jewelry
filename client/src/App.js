@@ -53,7 +53,7 @@ export const router = createBrowserRouter([
             {/* Hero Section */}
             <div className="max-w-4xl mx-auto">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-2 sm:mb-4">
-                Sharon Wisely Jewelry
+                Sharon Wisely
               </h1>
 
               <p className="text-sm sm:text-base md:text-lg text-gray-600 mx-auto max-w-2xl px-2 sm:px-4 mb-4 sm:mb-6">

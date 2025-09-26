@@ -81,7 +81,7 @@ export default function LoginForm({
             Sign in to your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Welcome back to Sharon Wisely Jewelry
+            Welcome back to Sharon Wisely
           </p>
         </div>
 

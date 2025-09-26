@@ -2,33 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import ProductCard from "./ProductCard.tsx";
 import Page from "./Page.tsx";
 import { useInventoryByCategory } from "../hooks/useInventory";
-
-const categoryInfo = {
-  rings: {
-    title: "Rings",
-    description:
-      "From rustic .... to everyday stacking bands, find the perfect ring for any occasion.",
-    image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800",
-  },
-  necklaces: {
-    title: "Necklaces",
-    description:
-      "Discover beautiful necklaces from delicate chains to statement pieces that complete any look.",
-    image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?w=800",
-  },
-  bracelets: {
-    title: "Bracelets",
-    description:
-      "Thick copper cuffs, intricate wired creations, stackable bangles - choose the perfect finishing touch to your style.",
-    image: "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=800",
-  },
-  earrings: {
-    title: "Earrings",
-    description:
-      "From timeless studs to dramatic drops, find earrings that express your unique style.",
-    image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=800",
-  },
-};
+import { categoryInfo } from "../constants/categories";
 
 export default function CategoryPage() {
   const { category } = useParams<{ category: string }>();

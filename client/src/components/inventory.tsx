@@ -4,6 +4,7 @@ import ProductCard from "./ProductCard.tsx";
 import { Item } from "./types";
 import Page from "./Page.tsx";
 import { useInventory } from "../hooks/useInventory";
+import { getCategoriesArray } from "../constants/categories";
 
 export default function Inventory() {
   // Replace manual state with useQuery hook
@@ -69,42 +70,13 @@ export default function Inventory() {
     return <div>No inventory found</div>;
   }
 
-  const categories = [
-    {
-      name: "rings",
-      title: "Rings",
-      image:
-        "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=300",
-      description: "Engagement rings, wedding bands, and fashion rings",
-    },
-    {
-      name: "necklaces",
-      title: "Necklaces",
-      image:
-        "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?w=300",
-      description: "Pendants, chains, and statement necklaces",
-    },
-    {
-      name: "bracelets",
-      title: "Bracelets",
-      image:
-        "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=300",
-      description: "Tennis bracelets, bangles, and charm bracelets",
-    },
-    {
-      name: "earrings",
-      title: "Earrings",
-      image:
-        "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=300",
-      description: "Studs, hoops, and drop earrings",
-    },
-  ];
+  const categories = getCategoriesArray();
 
   const displayedItems = filteredInventory || inventory;
   const totalItems = displayedItems?.length || 0;
 
   return (
-    <Page title={searchTerm ? `Search Results for "${searchTerm}"` : "Our Collection"}>
+    <Page title={searchTerm ? `Search Results for "${searchTerm}"` : "Collection"}>
       {/* Search Results Header */}
       {searchTerm && (
         <div className="mb-6">
@@ -117,14 +89,14 @@ export default function Inventory() {
       {/* Show category grid only if no search term */}
       {!searchTerm && (
         <div className="mb-12">
-          <p className="text-lg text-gray-600 text-center max-w-2xl mx-auto mb-8">
+          {/* <p className="text-lg text-gray-600 text-center max-w-2xl mx-auto mb-8">
             Discover our exquisite collection of handcrafted jewelry, featuring
             rings, necklaces, bracelets, and earrings made with the finest
             materials.
-          </p>
+          </p> */}
 
           {/* Category Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
             {categories.map((category) => (
               <Link
                 key={category.name}
@@ -164,10 +136,11 @@ export default function Inventory() {
               className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
             >
               <option value="all">All Categories</option>
-              <option value="rings">Rings</option>
-              <option value="necklaces">Necklaces</option>
-              <option value="bracelets">Bracelets</option>
-              <option value="earrings">Earrings</option>
+              {categories.map((category) => (
+                <option key={category.name} value={category.name}>
+                  {category.title}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -196,7 +169,7 @@ export default function Inventory() {
       {/* Products Grid */}
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          {searchTerm ? 'Search Results' : 'Our Collection'}
+          {searchTerm ? 'Search Results' : 'Collection'}
         </h2>
       </div>
 
