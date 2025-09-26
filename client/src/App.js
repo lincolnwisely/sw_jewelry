@@ -50,7 +50,7 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: (
-          <div className="text-center py-6 sm:py-12 px-4 sm:px-6">
+          <div className="text-center py-6 sm:py-12 sm:px-6">
             {/* Hero Section */}
             <div className="max-w-4xl mx-auto">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-2 sm:mb-4">

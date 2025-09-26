@@ -103,7 +103,7 @@ export default function Inventory() {
                 to={`/category/${category.name}`}
                 className="group block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border border-gray-200"
               >
-                <div className="aspect-square overflow-hidden">
+                <div className="aspect-video md:aspect-square overflow-hidden">
                   <img
                     src={category.image}
                     alt={category.title}
@@ -146,7 +146,8 @@ export default function Inventory() {
 
           {/* Sort Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="blockUncaught ReferenceError: Cannot access 'checkAuthStatus' before initialization
+ text-sm font-medium text-gray-700 mb-1">
               Sort by
             </label>
             <select
@@ -174,7 +175,7 @@ export default function Inventory() {
       </div>
 
       {displayedItems && displayedItems.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {displayedItems.map((item: Item) => (
             <ProductCard key={item.id} item={item} />
           ))}
