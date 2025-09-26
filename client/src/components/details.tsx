@@ -1,57 +1,67 @@
-import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { API_ENDPOINTS, apiCall } from "../config/api";
 import { Item } from "./types";
 import { useCart } from "../context/CartContext.tsx";
+import { useInventoryById } from "../hooks/useInventory";
 
 interface DetailProps {
   item?: Item;
 }
 
 export default function Detail(props: DetailProps = {}) {
-  const _item = props.item;
-  //get id from route to fetch itemif not provided in props
+  const { item: _item } = props;
   const { id } = useParams();
-  const isPreview = _item;
+  const isPreview = !!_item;
   const { addToCart, setCartOpen } = useCart();
 
-  const [item, setItem] = useState(_item ? _item : null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // Use the hook only if we don't have a preview item
+  const { data: fetchedItem = null, isLoading: loading, error } = useInventoryById(
+    isPreview ? '' : (id || '')
+  );
 
-  useEffect(() => {
-    const fetchItem = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  // Use the preview item if available, otherwise use the fetched item
+  const item = _item || fetchedItem;
 
-        const data = await apiCall(API_ENDPOINTS.INVENTORY_BY_ID(id));
-        setItem(data.data);
-      } catch (err) {
-        console.error("Error fetching item:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (!item || !item._id) {
-      fetchItem();
-    } else {
-      setLoading(false);
-    }
-  }, [id, item]);
-
-  if (loading) {
-    return <div>Loading...</div>;
+  if (loading && !isPreview) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black mx-auto"></div>
+          <p className="mt-2 text-gray-600">Loading product details...</p>
+        </div>
+      </div>
+    );
   }
-
-  if (error) {
-    return <div>Error: {error}</div>;
+  if (error && !isPreview) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="text-center">
+          <div className="text-red-600 mb-4">Error loading product</div>
+          <p className="text-gray-600">{error?.message || 'Something went wrong'}</p>
+          <Link
+            to="/inventory"
+            className="mt-4 inline-block text-black hover:text-gray-800"
+          >
+            ← Back to Collection
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   if (!item) {
-    return <div>Item not found</div>;
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="text-center">
+          <div className="text-gray-600 mb-4">Product not found</div>
+          <Link
+            to="/inventory"
+            className="text-black hover:text-gray-800"
+          >
+            ← Back to Collection
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   const formatPrice = (price: number) => {
@@ -61,10 +71,11 @@ export default function Detail(props: DetailProps = {}) {
     }).format(price);
   };
 
-  const getStockStatus = (stock: number) => {
-    if (stock === 0) return { text: "Out of Stock", color: "text-orange-100" };
-    if (stock <= 3)
-      return { text: `Only ${stock} left`, color: "text-orange-600" };
+  const getStockStatus = (stock: number | boolean) => {
+    const stockNum = typeof stock === 'boolean' ? (stock ? 1 : 0) : stock;
+    if (stockNum === 0) return { text: "Out of Stock", color: "text-orange-100" };
+    if (stockNum <= 3)
+      return { text: `Only ${stockNum} left`, color: "text-orange-600" };
     return { text: "In Stock", color: "text-green-600" };
   };
 
@@ -103,7 +114,6 @@ export default function Detail(props: DetailProps = {}) {
     );
   }
   
-  console.log('item', item)
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -175,13 +185,13 @@ export default function Detail(props: DetailProps = {}) {
             <button
               onClick={handleAddToCart}
               className={`w-full py-3 px-6 rounded-lg text-lg font-medium transition-colors ${
-                item.inStock > 0
+                (typeof item.inStock === 'boolean' ? item.inStock : item.inStock > 0)
                   ? "bg-black text-white hover:bg-gray-800"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
-              disabled={item.inStock === 0}
+              disabled={typeof item.inStock === 'boolean' ? !item.inStock : item.inStock === 0}
             >
-              {item.inStock > 0 ? "Add to Cart" : "Out of Stock"}
+              {(typeof item.inStock === 'boolean' ? item.inStock : item.inStock > 0) ? "Add to Cart" : "Out of Stock"}
             </button>
 
             <button className="w-full py-3 px-6 rounded-lg border border-black text-black hover:bg-gray-50 text-lg font-medium transition-colors">
@@ -201,7 +211,12 @@ export default function Detail(props: DetailProps = {}) {
               </div>
               <div className="flex justify-between">
                 <dt className="text-gray-600">Availability</dt>
-                <dd className="font-medium">{item.inStock} in stock</dd>
+                <dd className="font-medium">
+                  {typeof item.inStock === 'boolean'
+                    ? (item.inStock ? 'In Stock' : 'Out of Stock')
+                    : `${item.inStock} in stock`
+                  }
+                </dd>
               </div>
               <div className="flex justify-between">
                 <dt className="text-gray-600">Item ID</dt>

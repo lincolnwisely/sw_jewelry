@@ -5,6 +5,7 @@ import Cart from "./Cart.tsx";
 import { useAuth } from "../context/AuthContext.tsx";
 import TokenExpirationHandler from "./TokenExpirationHandler.tsx";
 import { Analytics } from "@vercel/analytics/react";
+import { getCategoriesArray } from "../constants/categories";
 // import AuthDebug from './AuthDebug';
 interface LayoutProps {
   children?: ReactNode;
@@ -152,6 +153,9 @@ export default function Layout({ children }: LayoutProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Get categories from centralized constant
+  const categories = getCategoriesArray();
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchTerm.trim()) {
@@ -232,30 +236,15 @@ export default function Layout({ children }: LayoutProps) {
                 </button>
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                   <div className="py-1">
-                    <Link
-                      to="/category/rings"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
-                    >
-                      Rings
-                    </Link>
-                    <Link
-                      to="/category/necklaces"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
-                    >
-                      Necklaces
-                    </Link>
-                    <Link
-                      to="/category/bracelets"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
-                    >
-                      Bracelets
-                    </Link>
-                    <Link
-                      to="/category/earrings"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
-                    >
-                      Earrings
-                    </Link>
+                    {categories.map((category) => (
+                      <Link
+                        key={category.name}
+                        to={`/category/${category.name}`}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
+                      >
+                        {category.title}
+                      </Link>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -410,34 +399,16 @@ export default function Layout({ children }: LayoutProps) {
                   </button>
                   {isCategoryOpen && (
                     <div className="ml-4 mt-1 space-y-1">
-                      <Link
-                        to="/category/rings"
-                        className="block px-3 py-2 rounded-md text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                        onClick={closeMobileMenu}
-                      >
-                        Rings
-                      </Link>
-                      <Link
-                        to="/category/necklaces"
-                        className="block px-3 py-2 rounded-md text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                        onClick={closeMobileMenu}
-                      >
-                        Necklaces
-                      </Link>
-                      <Link
-                        to="/category/bracelets"
-                        className="block px-3 py-2 rounded-md text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                        onClick={closeMobileMenu}
-                      >
-                        Bracelets
-                      </Link>
-                      <Link
-                        to="/category/earrings"
-                        className="block px-3 py-2 rounded-md text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                        onClick={closeMobileMenu}
-                      >
-                        Earrings
-                      </Link>
+                      {categories.map((category) => (
+                        <Link
+                          key={category.name}
+                          to={`/category/${category.name}`}
+                          className="block px-3 py-2 rounded-md text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                          onClick={closeMobileMenu}
+                        >
+                          {category.title}
+                        </Link>
+                      ))}
                     </div>
                   )}
                 </div>
