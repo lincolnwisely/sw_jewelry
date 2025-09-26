@@ -48,7 +48,7 @@ export default function Detail(props: DetailProps = {}) {
     );
   }
 
-  if (!item && !isPreview) {
+  if (!item) {
     return (
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="text-center">
@@ -71,10 +71,11 @@ export default function Detail(props: DetailProps = {}) {
     }).format(price);
   };
 
-  const getStockStatus = (stock: number) => {
-    if (stock === 0) return { text: "Out of Stock", color: "text-orange-100" };
-    if (stock <= 3)
-      return { text: `Only ${stock} left`, color: "text-orange-600" };
+  const getStockStatus = (stock: number | boolean) => {
+    const stockNum = typeof stock === 'boolean' ? (stock ? 1 : 0) : stock;
+    if (stockNum === 0) return { text: "Out of Stock", color: "text-orange-100" };
+    if (stockNum <= 3)
+      return { text: `Only ${stockNum} left`, color: "text-orange-600" };
     return { text: "In Stock", color: "text-green-600" };
   };
 
@@ -184,13 +185,13 @@ export default function Detail(props: DetailProps = {}) {
             <button
               onClick={handleAddToCart}
               className={`w-full py-3 px-6 rounded-lg text-lg font-medium transition-colors ${
-                item.inStock > 0
+                (typeof item.inStock === 'boolean' ? item.inStock : item.inStock > 0)
                   ? "bg-black text-white hover:bg-gray-800"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
-              disabled={item.inStock === 0}
+              disabled={typeof item.inStock === 'boolean' ? !item.inStock : item.inStock === 0}
             >
-              {item.inStock > 0 ? "Add to Cart" : "Out of Stock"}
+              {(typeof item.inStock === 'boolean' ? item.inStock : item.inStock > 0) ? "Add to Cart" : "Out of Stock"}
             </button>
 
             <button className="w-full py-3 px-6 rounded-lg border border-black text-black hover:bg-gray-50 text-lg font-medium transition-colors">
@@ -210,7 +211,12 @@ export default function Detail(props: DetailProps = {}) {
               </div>
               <div className="flex justify-between">
                 <dt className="text-gray-600">Availability</dt>
-                <dd className="font-medium">{item.inStock} in stock</dd>
+                <dd className="font-medium">
+                  {typeof item.inStock === 'boolean'
+                    ? (item.inStock ? 'In Stock' : 'Out of Stock')
+                    : `${item.inStock} in stock`
+                  }
+                </dd>
               </div>
               <div className="flex justify-between">
                 <dt className="text-gray-600">Item ID</dt>

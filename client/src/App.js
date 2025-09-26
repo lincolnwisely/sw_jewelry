@@ -11,6 +11,7 @@ import AdminLayout from './components/AdminLayout.tsx';
 import AdminDashboard from './components/AdminDashboard.tsx';
 import AdminInventory from './components/AdminInventory.tsx';
 import AddProduct from './components/AddProduct.tsx';
+import RecentProductsGrid from './components/RecentProductsGrid.tsx';
 import { useAuth } from './context/AuthContext.tsx';
 
 // Register page component that can use hooks
@@ -56,10 +57,6 @@ export const router = createBrowserRouter([
                 Sharon Wisely
               </h1>
 
-              <p className="text-sm sm:text-base md:text-lg text-gray-600 mx-auto max-w-2xl px-2 sm:px-4 mb-4 sm:mb-6">
-                Handcrafted necklaces, earrings, rings and bracelets out of copper, sterling silver and gemstones.
-              </p>
-
               <p className="text-xs sm:text-sm md:text-base text-gray-600 mx-auto max-w-xl px-2 sm:px-4 mb-6 sm:mb-8">
                 This site is in-progress.{" "}
                 <a
@@ -74,24 +71,8 @@ export const router = createBrowserRouter([
               </p>
             </div>
 
-            {/* Photo Gallery */}
-            <div className="mt-6 sm:mt-8 px-2 sm:px-4">
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 max-w-7xl mx-auto">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num) => (
-                  <div
-                    key={num}
-                    className="aspect-square overflow-hidden rounded-md sm:rounded-lg shadow-sm sm:shadow-md hover:shadow-lg transition-shadow duration-200 bg-gray-100"
-                  >
-                    <img
-                      src={`/images/${num}.jpeg`}
-                      alt={`Jewelry piece ${num}`}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* Recent Products Grid */}
+            <RecentProductsGrid />
           </div>
         ),
       },
