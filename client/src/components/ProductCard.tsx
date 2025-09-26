@@ -41,15 +41,13 @@ export default function ProductCard({ item }: ProductCardProps) {
       bracelets: "bg-blue-100 text-blue-800",
       necklaces: "bg-pink-100 text-pink-800",
       earrings: "bg-yellow-100 text-yellow-800",
+      other: "bg-purple-100 text-purple-800",
     };
     return (
       colors[category as keyof typeof colors] || "bg-gray-100 text-gray-800"
     );
-
   };
 
-
-  console.log('item', item);
   return (
     <Link
       to={`/inventory/${item.id}`}
@@ -57,7 +55,7 @@ export default function ProductCard({ item }: ProductCardProps) {
     >
       <div className="aspect-square overflow-hidden bg-gray-100">
         <img
-          src={item?.images ? item?.images[0] : item?.image}
+          src={item?.images && item.images.length > 0 ? item.images[0] : item.image}
           alt={item.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
           loading="lazy"
@@ -73,7 +71,7 @@ export default function ProductCard({ item }: ProductCardProps) {
           >
             {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
           </span>
-          {getStockBadge(item.inStock)}
+          {getStockBadge(typeof item.inStock === 'boolean' ? (item.inStock ? 1 : 0) : item.inStock)}
         </div>
 
         <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-black transition-colors">

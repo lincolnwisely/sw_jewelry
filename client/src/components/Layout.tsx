@@ -178,14 +178,14 @@ export default function Layout({ children }: LayoutProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo/Brand */}
-            <div className="flex items-center">
+            <div className="flex items-center px-4">
               <Link
                 to="/"
                 className="text-lg sm:text-xl font-semibold text-gray-900 hover:underline"
                 onClick={closeMobileMenu}
               >
-                <span className="hidden sm:inline">Sharon Wisely Jewelry</span>
-                <span className="sm:hidden">SW Jewelry</span>
+                <span>Sharon Wisely</span>
+                {/* <span className="sm:hidden">SW Jewelry</span> */}
               </Link>
             </div>
 
@@ -461,7 +461,7 @@ export default function Layout({ children }: LayoutProps) {
       <footer className="bg-white border-t">
         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
           <p className="text-center text-gray-500">
-            © 2025 Sharon Wisely Jewelry. All rights reserved.
+            © 2025 Sharon Wisely. All rights reserved.
           </p>
         </div>
       </footer>

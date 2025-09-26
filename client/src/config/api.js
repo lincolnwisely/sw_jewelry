@@ -79,7 +79,8 @@ export const apiCall = async (endpoint, options = {}) => {
     // Check if we have a token and if it's expired
     if (token && tokenUtils.isTokenExpired(token)) {
       // Clear expired token
-      console.log('apiCall - Token expired, removing from localStorage');
+      const tokenExp = tokenUtils.getTokenExpiration(token);
+      console.log('apiCall - Token expired, removing from localStorage. Expiration:', tokenExp, 'Current time:', new Date());
       localStorage.removeItem('sw_jewelry_token');
 
       // Trigger logout if this is a protected route

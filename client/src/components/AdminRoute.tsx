@@ -13,8 +13,14 @@ const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
 
   // Show loading while checking authentication OR if user exists but role is not loaded yet
   // Also show loading if we have a token in localStorage but auth state hasn't caught up yet
-  const hasStoredToken = localStorage.getItem('sw_jewelry_token');
-  if (state.loading || (state.isAuthenticated && !state.user?.role) || (hasStoredToken && !state.isAuthenticated)) {
+  const storedToken = localStorage.getItem('sw_jewelry_token');
+  const hasStoredToken = !!storedToken;
+  const shouldShowLoading = state.loading || (state.isAuthenticated && !state.user?.role) || (hasStoredToken && !state.isAuthenticated);
+
+
+  // Always show loading if there's a stored token but we're not authenticated yet
+  // This prevents the race condition from React StrictMode
+  if (shouldShowLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">

@@ -62,7 +62,7 @@ export default function Detail(props: DetailProps = {}) {
   };
 
   const getStockStatus = (stock: number) => {
-    if (stock === 0) return { text: "Out of Stock", color: "text-red-600" };
+    if (stock === 0) return { text: "Out of Stock", color: "text-orange-100" };
     if (stock <= 3)
       return { text: `Only ${stock} left`, color: "text-orange-600" };
     return { text: "In Stock", color: "text-green-600" };
@@ -74,6 +74,7 @@ export default function Detail(props: DetailProps = {}) {
       bracelets: "bg-blue-100 text-blue-800",
       necklaces: "bg-pink-100 text-pink-800",
       earrings: "bg-yellow-100 text-yellow-800",
+      other: 'bg-green-100 text-green-800'
     };
     return (
       colors[category as keyof typeof colors] || "bg-gray-100 text-gray-800"
@@ -91,7 +92,7 @@ export default function Detail(props: DetailProps = {}) {
     return (
       <div className="bg-white rounded-lg shadow-sm border p-4">
         <img
-          src={item.image}
+          src={item?.images ? item.images[0] : item.image}
           alt={item.title}
           className="w-full h-48 object-cover rounded mb-4"
         />
@@ -101,6 +102,8 @@ export default function Detail(props: DetailProps = {}) {
       </div>
     );
   }
+  
+  console.log('item', item)
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -116,7 +119,7 @@ export default function Detail(props: DetailProps = {}) {
         <div className="space-y-4">
           <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
             <img
-              src={item.image}
+          src={item?.images ? item.images[0] : item.image}
               alt={item.title}
               className="w-full h-full object-cover"
             />

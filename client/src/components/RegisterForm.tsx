@@ -105,7 +105,7 @@ export default function RegisterForm({
             Create your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Join Sharon Wisely Jewelry to start shopping
+            Join Sharon Wisely to start shopping
           </p>
         </div>
 
