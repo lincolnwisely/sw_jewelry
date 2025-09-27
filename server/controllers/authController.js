@@ -1,17 +1,6 @@
 const jwt = require('jsonwebtoken');
-const { MongoClient } = require('mongodb');
+const dbManager = require('../utils/database');
 const User = require('../models/User');
-
-// Database connection
-let db;
-const connectDB = async () => {
-  if (!db) {
-    const client = new MongoClient(process.env.MONGODB_URI);
-    await client.connect();
-    db = client.db(process.env.DB_NAME || 'sw_jewelry');
-  }
-  return db;
-};
 
 // Generate JWT token
 const generateToken = (userId, role) => {
@@ -47,8 +36,7 @@ const registerUser = async (req, res) => {
       });
     }
 
-    const database = await connectDB();
-    const usersCollection = database.collection('users');
+    const usersCollection = await dbManager.getCollection('users');
 
     // Check if user already exists
     const existingUser = await usersCollection.findOne({ 
@@ -135,8 +123,7 @@ const loginUser = async (req, res) => {
       });
     }
 
-    const database = await connectDB();
-    const usersCollection = database.collection('users');
+    const usersCollection = await dbManager.getCollection('users');
 
     // Find user by email
     const user = await usersCollection.findOne({ 
@@ -237,8 +224,7 @@ const logoutUser = async (req, res) => {
 // Get current user
 const getCurrentUser = async (req, res) => {
   try {
-    const database = await connectDB();
-    const usersCollection = database.collection('users');
+    const usersCollection = await dbManager.getCollection('users');
 
     const user = await usersCollection.findOne({ _id: req.user.userId });
 

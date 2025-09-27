@@ -1,35 +1,5 @@
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-
-// MongoDB connection configuration
-const username = process.env.MONGODB_USERNAME || 'lincolnwisely';
-const password = process.env.MONGODB_PASSWORD;
-const cluster = process.env.MONGODB_CLUSTER || 'cluster0.9qqs7tb.mongodb.net';
-const databaseName = process.env.MONGODB_DATABASE || 'sw_jewelry_db';
-
-if (!password) {
-  console.error('MONGODB_PASSWORD environment variable is required');
-  process.exit(1);
-}
-const uri = `mongodb+srv://${username}:${password}@${cluster}/?retryWrites=true&w=majority&appName=Cluster0`;
-
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
-// Helper function to get database connection
-async function getDatabase() {
-  try {
-    await client.connect();
-    return client.db(databaseName);
-  } catch (error) {
-    console.error('Database connection error:', error);
-    throw error;
-  }
-}
+const { ObjectId } = require('mongodb');
+const dbManager = require('../utils/database');
 
 
 const validCategories = ['rings', 'bracelets', 'necklaces', 'earrings', 'other'];
@@ -38,8 +8,7 @@ const validCategories = ['rings', 'bracelets', 'necklaces', 'earrings', 'other']
 // GET all inventory items
 const getAllInventory = async (req, res) => {
   try {
-    const db = await getDatabase();
-    const collection = db.collection('inventory');
+    const collection = await dbManager.getCollection('inventory');
     
     const { category, tag, minPrice, maxPrice, inStock } = req.query;
     let query = {};
@@ -83,8 +52,7 @@ const getAllInventory = async (req, res) => {
 const getInventoryById = async (req, res) => {
   try {
     const { id } = req.params;
-    const db = await getDatabase();
-    const collection = db.collection('inventory');
+    const collection = await dbManager.getCollection('inventory');
     
     const item = await collection.findOne({ id });
     
@@ -111,11 +79,9 @@ const getInventoryById = async (req, res) => {
 
 // GET all items in given category
 const getInventoryByCategory = async (req, res) => {
-
   try {
     const { category } = req.params;
-    const db = await getDatabase();
-    const collection = db.collection('inventory');
+    const collection = await dbManager.getCollection('inventory');
 
     const items = await collection.find({ category }).toArray();
     res.json({
@@ -136,8 +102,7 @@ const getInventoryByCategory = async (req, res) => {
 // POST create new inventory item
 const createInventoryItem = async (req, res) => {
   try {
-    const db = await getDatabase();
-    const collection = db.collection('inventory');
+    const collection = await dbManager.getCollection('inventory');
     
     const newItem = req.body;
     
@@ -211,9 +176,8 @@ const updateInventoryItem = async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
-    
-    const db = await getDatabase();
-    const collection = db.collection('inventory');
+
+    const collection = await dbManager.getCollection('inventory');
     
     // Check if item exists
     const existingItem = await collection.findOne({ id });
@@ -283,8 +247,7 @@ const updateInventoryItem = async (req, res) => {
 const deleteInventoryItem = async (req, res) => {
   try {
     const { id } = req.params;
-    const db = await getDatabase();
-    const collection = db.collection('inventory');
+    const collection = await dbManager.getCollection('inventory');
 
     // Try both _id (MongoDB) and id (custom) fields to be flexible
     let result;
@@ -325,8 +288,7 @@ const deleteInventoryItem = async (req, res) => {
 // GET inventory statistics
 const getInventoryStats = async (req, res) => {
   try {
-    const db = await getDatabase();
-    const collection = db.collection('inventory');
+    const collection = await dbManager.getCollection('inventory');
     
     const totalItems = await collection.countDocuments();
     const totalValue = await collection.aggregate([
