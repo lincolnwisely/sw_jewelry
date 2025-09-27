@@ -146,8 +146,7 @@ export default function Inventory() {
 
           {/* Sort Filter */}
           <div>
-            <label className="blockUncaught ReferenceError: Cannot access 'checkAuthStatus' before initialization
- text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Sort by
             </label>
             <select
