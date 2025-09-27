@@ -1,16 +1,6 @@
 const jwt = require('jsonwebtoken');
-const { MongoClient, ObjectId } = require('mongodb');
-
-// Database connection
-let db;
-const connectDB = async () => {
-  if (!db) {
-    const client = new MongoClient(process.env.MONGODB_URI);
-    await client.connect();
-    db = client.db(process.env.DB_NAME || 'sw_jewelry');
-  }
-  return db;
-};
+const { ObjectId } = require('mongodb');
+const dbManager = require('../utils/database');
 
 // Verify JWT token and authenticate user
 const authenticate = async (req, res, next) => {
@@ -36,8 +26,7 @@ const authenticate = async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       
       // Get user from database
-      const database = await connectDB();
-      const usersCollection = database.collection('users');
+      const usersCollection = await dbManager.getCollection('users');
       
       const user = await usersCollection.findOne({ 
         _id: new ObjectId(decoded.userId) 
@@ -138,8 +127,7 @@ const optionalAuthenticate = async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       
       // Get user from database
-      const database = await connectDB();
-      const usersCollection = database.collection('users');
+      const usersCollection = await dbManager.getCollection('users');
       
       const user = await usersCollection.findOne({ 
         _id: new ObjectId(decoded.userId) 

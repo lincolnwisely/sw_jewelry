@@ -14,7 +14,8 @@
     "dev": "node api/index.js",
     "seed": "node utils/seedDatabase.js",
     "setup-users": "node utils/setupUsers.js",
-    "setup": "npm run seed && npm run setup-users",
+    "create-indexes": "node utils/createIndexes.js",
+    "setup": "npm run seed && npm run setup-users && npm run create-indexes",
     "start": "node api/index.js"
   },
   "dependencies": {
