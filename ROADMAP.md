@@ -23,6 +23,15 @@
 - ✅ **Admin Inventory Management**: Full CRUD interface for product management
 - ✅ **🎉 MAJOR: Multi-Image Product System**: Complete Cloudinary integration with drag & drop upload, backward-compatible database schema supporting both single `image` and multi-image `images` array format
 
+## Latest Updates (v1.1.0 / v0.3.0) - September 28, 2025
+
+- ✅ **🚀 CI/CD Pipeline**: Automated GitHub Actions deployment to Fly.io
+- ✅ **🔧 Database Optimization**: Centralized connection manager with connection pooling (min: 2, max: 10)
+- ✅ **📊 Database Indexing**: Comprehensive indexing strategy with text search capabilities
+- ✅ **🔐 Enhanced Authentication**: Admin role-based routing with immediate user data access
+- ✅ **💚 Health Monitoring**: Server health check endpoints for monitoring
+- ✅ **⚡ Performance**: Significant database performance improvements
+
 ### Phase 1: Customer-Facing Store (2-3 weeks)
 
 1. Enhanced Product Catalog
@@ -161,5 +170,10 @@
 - [ ] Add comprehensive error boundaries
 - [ ] Implement proper TypeScript throughout
 - [ ] Add unit and integration tests
-- [ ] Set up CI/CD pipeline
-- [ ] Performance monitoring and optimization
+- [x] Set up CI/CD pipeline (GitHub Actions → Fly.io)
+- [x] Performance monitoring and optimization (health checks, database indexing)
+- [x] Database connection optimization (connection pooling)
+- [x] Centralized database management
+- [ ] API rate limiting implementation
+- [ ] Enhanced error logging and monitoring
+- [ ] Security audit and vulnerability assessment
