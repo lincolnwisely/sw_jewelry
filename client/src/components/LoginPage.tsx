@@ -13,9 +13,13 @@ export default function LoginPage() {
 
   const handleLogin = async (loginData: LoginData) => {
     try {
-      await login(loginData.email, loginData.password);
-      // Redirect to home page after successful login
-      navigate('/');
+      const user = await login(loginData.email, loginData.password);
+      // Redirect based on user role
+      if (user.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       // Error is handled by the AuthContext and passed through state.error
       console.error('Login failed:', error);

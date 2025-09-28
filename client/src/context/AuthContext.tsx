@@ -114,7 +114,7 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
 
 interface AuthContextType {
   state: AuthState;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<User>;
   register: (userData: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
   clearError: () => void;
@@ -233,7 +233,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => clearTimeout(timer);
   }, [checkAuthStatus]);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<User> => {
     try {
       dispatch({ type: 'AUTH_START' });
 
@@ -258,6 +258,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             token: response.data.token
           }
         });
+
+        // Return the user data so the caller can access role immediately
+        return response.data.user;
       } else {
         throw new Error(response.message || 'Login failed');
       }
