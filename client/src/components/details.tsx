@@ -79,18 +79,6 @@ export default function Detail(props: DetailProps = {}) {
     return { text: "In Stock", color: "text-green-600" };
   };
 
-  const getCategoryColor = (category: string) => {
-    const colors = {
-      rings: "bg-gray-100 text-gray-800",
-      bracelets: "bg-blue-100 text-blue-800",
-      necklaces: "bg-pink-100 text-pink-800",
-      earrings: "bg-yellow-100 text-yellow-800",
-      other: 'bg-green-100 text-green-800'
-    };
-    return (
-      colors[category as keyof typeof colors] || "bg-gray-100 text-gray-800"
-    );
-  };
 
   const stockStatus = getStockStatus(item.inStock);
 
@@ -140,9 +128,7 @@ export default function Detail(props: DetailProps = {}) {
         <div className="space-y-6">
           <div>
             <span
-              className={`px-3 py-1 text-sm font-medium rounded-full ${getCategoryColor(
-                item.category
-              )}`}
+              className={`px-3 py-1 text-sm font-medium rounded-full bg-gray-100 text-gray-800`}
             >
               {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
             </span>
