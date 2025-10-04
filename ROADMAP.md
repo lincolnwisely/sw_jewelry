@@ -23,8 +23,11 @@
 - ✅ **Admin Inventory Management**: Full CRUD interface for product management
 - ✅ **🎉 MAJOR: Multi-Image Product System**: Complete Cloudinary integration with drag & drop upload, backward-compatible database schema supporting both single `image` and multi-image `images` array format
 
-## Latest Updates (v1.1.0 / v0.3.0) - September 28, 2025
+## Latest Updates (v1.5.0) - October 4, 2025
 
+- ✅ **🔐 SECURITY: HttpOnly Cookie Authentication**: Migrated from localStorage to secure HttpOnly cookies for enhanced XSS protection
+- ✅ **🛡️ Enhanced CORS**: Updated CORS configuration with credentials support and explicit origin whitelist
+- ✅ **🧹 Code Cleanup**: Removed client-side token management and simplified authentication flow
 - ✅ **🚀 CI/CD Pipeline**: Automated GitHub Actions deployment to Fly.io
 - ✅ **🔧 Database Optimization**: Centralized connection manager with connection pooling (min: 2, max: 10)
 - ✅ **📊 Database Indexing**: Comprehensive indexing strategy with text search capabilities
@@ -57,11 +60,12 @@
 
     - [x] Customer registration/login
     - [x] User profiles and account management
-    - [x] Session management (JWT tokens + cookies)
+    - [x] Session management (HttpOnly cookies - secure, XSS-protected)
     - [x] Password hashing and validation
     - [x] Protected routes and middleware
     - [x] JWT token expiration handling and automatic logout
     - [x] Role-based access control (customer vs admin)
+    - [x] Secure cookie-based authentication (no localStorage)
     - [ ] Password reset functionality
 
 4. Payment Integration
@@ -102,7 +106,8 @@
 
     - [x] Mobile responsiveness (complete - responsive navigation and homepage)
     - [x] Loading states and error handling
-    - [x] Authentication state management and token persistence
+    - [x] Authentication state management with secure cookies
+    - [x] Security optimization (HttpOnly cookies, XSS protection)
     - [ ] SEO optimization
     - [ ] Performance optimization
     - [x] Dark theme implementation (black/gray color scheme)
@@ -174,6 +179,7 @@
 - [x] Performance monitoring and optimization (health checks, database indexing)
 - [x] Database connection optimization (connection pooling)
 - [x] Centralized database management
+- [x] Security enhancement (HttpOnly cookies, XSS protection)
 - [ ] API rate limiting implementation
 - [ ] Enhanced error logging and monitoring
-- [ ] Security audit and vulnerability assessment
+- [ ] CSRF token implementation for additional security
