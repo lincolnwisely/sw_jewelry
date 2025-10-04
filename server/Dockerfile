@@ -1,15 +1,15 @@
 FROM node:20-alpine
 
-# Install pnpm globally
-RUN npm install -g pnpm
+# Install pnpm globally (match your local version)
+RUN npm install -g pnpm@9.0.0
 
 WORKDIR /app
 
-# Copy package files
-COPY package.json pnpm-lock.yaml ./
+# Copy package.json
+COPY package.json ./
 
-# Install dependencies using pnpm
-RUN pnpm install --frozen-lockfile --prod
+# Install dependencies (no frozen-lockfile to avoid monorepo conflicts)
+RUN pnpm install --prod --no-lockfile
 
 # Copy application code
 COPY . .
