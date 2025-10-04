@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2025-10-04
+
+### 🔐 Security Enhancement: HttpOnly Cookie Authentication
+
+### Changed
+- **Migrated from localStorage to HttpOnly cookies**: JWT tokens now stored in secure HttpOnly cookies instead of localStorage
+- **Enhanced XSS Protection**: Tokens are no longer accessible to JavaScript, preventing XSS-based token theft
+- **Automatic Cookie Management**: Browser handles cookie lifecycle automatically
+- **Simplified Client Code**: Removed all manual token storage, retrieval, and expiration checking
+
+### Backend Updates
+- **Cookie-Based Authentication**: JWT tokens set via HttpOnly cookies with `secure` and `sameSite` flags
+- **Updated CORS Configuration**: Added `Access-Control-Allow-Credentials` with explicit origin whitelist
+- **Removed Token from Response Body**: Login/register endpoints no longer send token in JSON response
+- **Environment-Aware Cookie Settings**: `sameSite: 'lax'` in development, `'strict'` in production
+
+### Frontend Updates
+- **Credentials Include**: All API calls now use `credentials: 'include'` to send cookies automatically
+- **Removed localStorage Dependencies**: Eliminated all localStorage token operations
+- **Simplified Auth State**: Removed token from AuthContext state interface
+- **Cleaned Up Components**: Removed `TokenExpirationHandler` component (no longer needed)
+- **Updated API Hooks**: Removed manual Authorization headers from mutation hooks
+
+### Security Improvements
+- ✅ **XSS Protection**: HttpOnly cookies cannot be accessed by malicious JavaScript
+- ✅ **CSRF Mitigation**: SameSite cookie attribute helps prevent cross-site request forgery
+- ✅ **Automatic Security**: Browser enforces cookie security policies
+- ✅ **No Token Exposure**: Tokens never touch client-side code
+
+### Removed
+- Token expiration checking on client (server handles this)
+- localStorage token persistence
+- Manual Authorization header management
+- TokenExpirationHandler UI component
+
 ## [1.3.0] - 2025-09-25
 
 ### 🎉 Major Feature: Multi-Image Product Management

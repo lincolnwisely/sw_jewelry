@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect, useCallback, ReactNode } from 'react';
-import { API_ENDPOINTS, apiCall, tokenUtils } from '../config/api';
+import { API_ENDPOINTS, apiCall } from '../config/api';
 
 interface User {
   _id: string;
@@ -21,7 +21,6 @@ interface User {
 
 interface AuthState {
   user: User | null;
-  token: string | null;
   isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
@@ -29,27 +28,19 @@ interface AuthState {
 
 type AuthAction =
   | { type: 'AUTH_START' }
-  | { type: 'AUTH_SUCCESS'; payload: { user: User; token: string } }
+  | { type: 'AUTH_SUCCESS'; payload: { user: User } }
   | { type: 'AUTH_FAILURE'; payload: string }
   | { type: 'LOGOUT' }
   | { type: 'CLEAR_ERROR' }
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'UPDATE_USER'; payload: Partial<User> };
 
-// Check if we have a stored token to initialize state appropriately
-const getInitialState = (): AuthState => {
-  const hasStoredToken = !!localStorage.getItem('sw_jewelry_token');
-
-  return {
-    user: null,
-    token: null,
-    isAuthenticated: false,
-    loading: hasStoredToken, // Only show loading if we have a token to verify
-    error: null
-  };
+const initialState: AuthState = {
+  user: null,
+  isAuthenticated: false,
+  loading: true, // Start loading to check auth status on mount
+  error: null
 };
-
-const initialState: AuthState = getInitialState();
 
 function authReducer(state: AuthState, action: AuthAction): AuthState {
   console.log('Auth reducer - action:', action.type, action);
@@ -63,13 +54,11 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
     case 'AUTH_SUCCESS':
       console.log('AUTH_SUCCESS reducer - setting auth state:', {
         user: action.payload.user,
-        token: action.payload.token ? 'exists' : 'null',
         isAuthenticated: true
       });
       return {
         ...state,
         user: action.payload.user,
-        token: action.payload.token,
         isAuthenticated: true,
         loading: false,
         error: null
@@ -78,7 +67,6 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
       return {
         ...state,
         user: null,
-        token: null,
         isAuthenticated: false,
         loading: false,
         error: action.payload
@@ -87,7 +75,6 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
       return {
         ...state,
         user: null,
-        token: null,
         isAuthenticated: false,
         loading: false,
         error: null
@@ -120,7 +107,6 @@ interface AuthContextType {
   clearError: () => void;
   updateUser: (userData: Partial<User>) => void;
   checkAuthStatus: () => Promise<void>;
-  isTokenExpired: () => boolean;
 }
 
 interface RegisterData {
@@ -132,105 +118,41 @@ interface RegisterData {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const AUTH_TOKEN_KEY = 'sw_jewelry_token';
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // Set up automatic token expiration check
-  useEffect(() => {
-    if (!state.token) return;
-
-    const timeUntilExpiration = tokenUtils.getTimeUntilExpiration(state.token);
-
-    if (timeUntilExpiration <= 0) {
-      // Token is already expired
-      dispatch({ type: 'LOGOUT' });
-      return;
-    }
-
-    // Set timeout to automatically logout when token expires
-    const timeoutId = setTimeout(() => {
-      console.log('Token expired automatically, logging out...');
-      dispatch({ type: 'LOGOUT' });
-    }, timeUntilExpiration);
-
-    return () => clearTimeout(timeoutId);
-  }, [state.token]);
-
-  // Store token in localStorage when it changes
-  useEffect(() => {
-    if (state.token) {
-      localStorage.setItem(AUTH_TOKEN_KEY, state.token);
-    } else if (state.token === null && !state.loading) {
-      // Only remove token if we're not loading (to prevent removal during initialization)
-      localStorage.removeItem(AUTH_TOKEN_KEY);
-    }
-  }, [state.token, state.loading]);
-
   const checkAuthStatus = useCallback(async () => {
     try {
-      const storedToken = localStorage.getItem(AUTH_TOKEN_KEY);
-
-      if (!storedToken) {
-        // Only set loading false if we're not already authenticated
-        // This prevents StrictMode double-invocation from breaking auth
-        if (!state.isAuthenticated) {
-          dispatch({ type: 'SET_LOADING', payload: false });
-        }
-        return;
-      }
-
-      // Check if token is expired before making API call
-      if (tokenUtils.isTokenExpired(storedToken)) {
-        localStorage.removeItem(AUTH_TOKEN_KEY);
-        dispatch({ type: 'LOGOUT' });
-        dispatch({ type: 'SET_LOADING', payload: false });
-        return;
-      }
-
-      // Verify token with backend
+      // Check if we have a valid cookie by calling the /me endpoint
       const response = await apiCall(API_ENDPOINTS.AUTH.ME, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${storedToken}`
-        }
+        method: 'GET'
       });
 
       if (response.success && response.data?.user) {
         dispatch({
           type: 'AUTH_SUCCESS',
           payload: {
-            user: response.data.user,
-            token: storedToken
+            user: response.data.user
           }
         });
       } else {
-        // Invalid token
-        localStorage.removeItem(AUTH_TOKEN_KEY);
         dispatch({ type: 'SET_LOADING', payload: false });
       }
     } catch (error: any) {
       console.error('Auth check failed:', error);
 
-      // Handle specific expiration errors
-      if (error.message === 'EXPIRED_TOKEN' || error.message === 'UNAUTHORIZED') {
+      // Handle unauthorized errors
+      if (error.message === 'UNAUTHORIZED') {
         dispatch({ type: 'LOGOUT' });
       }
 
-      localStorage.removeItem(AUTH_TOKEN_KEY);
       dispatch({ type: 'SET_LOADING', payload: false });
     }
-  }, [state.isAuthenticated]);
+  }, []);
 
   // Check if user is authenticated on app start
   useEffect(() => {
-    // Add a small delay to ensure localStorage is stable
-    const timer = setTimeout(() => {
-      checkAuthStatus();
-    }, 100);
-
-    return () => clearTimeout(timer);
+    checkAuthStatus();
   }, [checkAuthStatus]);
 
   const login = async (email: string, password: string): Promise<User> => {
@@ -247,15 +169,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       console.log('Login response:', response);
 
-      if (response.success && response.data?.user && response.data?.token) {
-        console.log('Login successful, storing token and user:', response.data.user);
-        localStorage.setItem(AUTH_TOKEN_KEY, response.data.token);
+      if (response.success && response.data?.user) {
+        console.log('Login successful, user:', response.data.user);
 
         dispatch({
           type: 'AUTH_SUCCESS',
           payload: {
-            user: response.data.user,
-            token: response.data.token
+            user: response.data.user
           }
         });
 
@@ -283,12 +203,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify(userData)
       });
 
-      if (response.success && response.data?.user && response.data?.token) {
+      if (response.success && response.data?.user) {
         dispatch({
           type: 'AUTH_SUCCESS',
           payload: {
-            user: response.data.user,
-            token: response.data.token
+            user: response.data.user
           }
         });
       } else {
@@ -303,21 +222,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     try {
-      // Call logout endpoint to invalidate server-side session
-      if (state.token) {
-        await apiCall(API_ENDPOINTS.AUTH.LOGOUT, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${state.token}`
-          }
-        });
-      }
+      // Call logout endpoint to clear the HttpOnly cookie
+      await apiCall(API_ENDPOINTS.AUTH.LOGOUT, {
+        method: 'POST'
+      });
     } catch (error) {
       console.error('Logout API call failed:', error);
       // Continue with local logout even if API call fails
     } finally {
       // Always clear local state
-      localStorage.removeItem(AUTH_TOKEN_KEY);
       dispatch({ type: 'LOGOUT' });
     }
   };
@@ -330,10 +243,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'UPDATE_USER', payload: userData });
   };
 
-  const isTokenExpired = () => {
-    return tokenUtils.isTokenExpired(state.token);
-  };
-
   const contextValue: AuthContextType = {
     state,
     login,
@@ -341,8 +250,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     logout,
     clearError,
     updateUser,
-    checkAuthStatus,
-    isTokenExpired
+    checkAuthStatus
   };
 
   return (
