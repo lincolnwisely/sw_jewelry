@@ -17,7 +17,7 @@ const setCookieToken = (res, token) => {
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict'
+    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax'  // 'lax' for dev cross-origin
   };
 
   res.cookie('jwt', token, cookieOptions);
@@ -96,8 +96,7 @@ const registerUser = async (req, res) => {
       success: true,
       message: 'User registered successfully',
       data: {
-        user: userResponse,
-        token
+        user: userResponse
       }
     });
 
@@ -183,8 +182,7 @@ const loginUser = async (req, res) => {
       success: true,
       message: 'Login successful',
       data: {
-        user: userResponse,
-        token
+        user: userResponse
       }
     });
 
@@ -205,7 +203,7 @@ const logoutUser = async (req, res) => {
       expires: new Date(0),
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict'
+      sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax'
     });
 
     res.json({

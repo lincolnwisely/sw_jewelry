@@ -8,13 +8,10 @@ export function useCreateProduct() {
 
   return useMutation({
     mutationFn: async (productData: Omit<Item, '_id'>): Promise<Item> => {
-      const token = localStorage.getItem('sw_jewelry_token');
-
       const response = await apiCall(API_ENDPOINTS.INVENTORY, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(productData),
       });
@@ -37,13 +34,8 @@ export function useDeleteProduct() {
 
   return useMutation({
     mutationFn: async (productId: string): Promise<void> => {
-      const token = localStorage.getItem('sw_jewelry_token');
-
       await apiCall(API_ENDPOINTS.INVENTORY_BY_ID(productId), {
         method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
     },
     onSuccess: () => {

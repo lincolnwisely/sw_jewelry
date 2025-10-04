@@ -3,7 +3,6 @@ import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext.tsx";
 import Cart from "./Cart.tsx";
 import { useAuth } from "../context/AuthContext.tsx";
-import TokenExpirationHandler from "./TokenExpirationHandler.tsx";
 import { Analytics } from "@vercel/analytics/react";
 import { getCategoriesArray } from "../constants/categories";
 // import AuthDebug from './AuthDebug';
@@ -270,7 +269,7 @@ export default function Layout({ children }: LayoutProps) {
                 </div>
                 <input
                   type="search"
-                  placeholder="Search jewelry..."
+                  placeholder="Search..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
@@ -439,9 +438,6 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* Cart Sliding Panel */}
       <Cart />
-
-      {/* Token Expiration Handler */}
-      <TokenExpirationHandler />
 
       {/* Analytics */}
       <Analytics />

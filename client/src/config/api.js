@@ -70,26 +70,11 @@ export const tokenUtils = {
   }
 };
 
-// Helper function for API calls with automatic token handling
+// Helper function for API calls with automatic cookie-based authentication
 export const apiCall = async (endpoint, options = {}) => {
   try {
-    // Get token from localStorage for protected routes
-    const token = localStorage.getItem('sw_jewelry_token');
-
-    // Check if we have a token and if it's expired
-    if (token && tokenUtils.isTokenExpired(token)) {
-      // Clear expired token
-      const tokenExp = tokenUtils.getTokenExpiration(token);
-      console.log('apiCall - Token expired, removing from localStorage. Expiration:', tokenExp, 'Current time:', new Date());
-      localStorage.removeItem('sw_jewelry_token');
-
-      // Trigger logout if this is a protected route
-      if (options.headers?.Authorization || endpoint.includes('/auth/me')) {
-        throw new Error('EXPIRED_TOKEN');
-      }
-    }
-
     const response = await fetch(endpoint, {
+      credentials: 'include',  // Always send cookies with requests
       headers: {
         'Content-Type': 'application/json',
         ...options.headers,
@@ -99,9 +84,6 @@ export const apiCall = async (endpoint, options = {}) => {
 
     // Handle 401 Unauthorized responses
     if (response.status === 401) {
-      // Clear any stored token
-      console.log('apiCall - 401 Unauthorized, removing token from localStorage');
-      localStorage.removeItem('sw_jewelry_token');
       throw new Error('UNAUTHORIZED');
     }
 
