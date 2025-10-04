@@ -38,11 +38,29 @@ server/
 - SameSite attribute configured
 - Cookie cleared on logout
 
-✅ **User Model**
+✅ **Authentication Middleware** (20 tests)
+- JWT verification from cookies
+- JWT verification from Authorization header
+- Token expiration handling
+- Invalid token rejection
+- User validation (existence, active status)
+- Admin authorization
+- Resource ownership authorization
+- Optional authentication
+- Database error handling
+
+✅ **User Model** (8 tests)
 - User creation and validation
 - Password hashing (bcrypt)
 - Password comparison
 - Safe object transformation (no password leaks)
+
+✅ **Item Model** (19 tests)
+- Item creation and validation
+- Business logic (discounts, stock status)
+- Image format compatibility (legacy + new)
+- Safe updates
+- Database serialization
 
 ### Writing New Tests
 
