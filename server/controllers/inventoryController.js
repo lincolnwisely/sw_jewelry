@@ -1,8 +1,6 @@
 const { ObjectId } = require('mongodb');
 const dbManager = require('../utils/database');
-
-
-const validCategories = ['rings', 'bracelets', 'necklaces', 'earrings', 'other'];
+const Item = require('../models/Item');
 
 
 // GET all inventory items
@@ -103,32 +101,20 @@ const getInventoryByCategory = async (req, res) => {
 const createInventoryItem = async (req, res) => {
   try {
     const collection = await dbManager.getCollection('inventory');
-    
-    const newItem = req.body;
-    
-    // Validate required fields (tags can be empty array, so check differently)
-    const requiredFields = ['id', 'title', 'description', 'price', 'inStock', 'category'];
-    const missingFields = requiredFields.filter(field =>
-      newItem[field] === undefined || newItem[field] === null || newItem[field] === ''
-    );
 
-    // Check tags separately (must be an array, can be empty)
-    if (!Array.isArray(newItem.tags)) {
-      missingFields.push('tags (must be an array)');
-    }
+    // Create Item instance
+    const newItem = new Item(req.body);
 
-    // Check for image(s) - either 'image' (legacy) or 'images' (new format) is required
-    if (!newItem.image && (!newItem.images || !Array.isArray(newItem.images) || newItem.images.length === 0)) {
-      missingFields.push('image or images');
-    }
-
-    if (missingFields.length > 0) {
+    // Validate item data
+    const validationErrors = newItem.validate();
+    if (validationErrors.length > 0) {
       return res.status(400).json({
         success: false,
-        message: `Missing required fields: ${missingFields.join(', ')}`
+        message: 'Validation failed',
+        errors: validationErrors
       });
     }
-    
+
     // Check if item with same ID already exists
     const existingItem = await collection.findOne({ id: newItem.id });
     if (existingItem) {
@@ -137,29 +123,14 @@ const createInventoryItem = async (req, res) => {
         message: 'Item with this ID already exists'
       });
     }
-    
-    // Validate category
-    if (!validCategories.includes(newItem.category)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid category. Must be one of: rings, bracelets, necklaces, earrings'
-      });
-    }
-    
-    // Validate price and stock
-    if (newItem.price < 0 || newItem.inStock < 0) {
-      return res.status(400).json({
-        success: false,
-        message: 'Price and stock must be non-negative numbers'
-      });
-    }
-    
-    const result = await collection.insertOne(newItem);
-    
+
+    // Insert item
+    const result = await collection.insertOne(newItem.toObject());
+
     res.status(201).json({
       success: true,
       message: 'Inventory item created successfully',
-      data: newItem
+      data: newItem.toObject()
     });
   } catch (error) {
     console.error('Error creating inventory item:', error);
@@ -175,63 +146,50 @@ const createInventoryItem = async (req, res) => {
 const updateInventoryItem = async (req, res) => {
   try {
     const { id } = req.params;
-    const updateData = req.body;
-
     const collection = await dbManager.getCollection('inventory');
-    
+
     // Check if item exists
-    const existingItem = await collection.findOne({ id });
-    if (!existingItem) {
+    const existingItemData = await collection.findOne({ id });
+    if (!existingItemData) {
       return res.status(404).json({
         success: false,
         message: 'Inventory item not found'
       });
     }
-    
-    // Validate category if provided
-    if (updateData.category) {
-      if (!validCategories.includes(updateData.category)) {
-        return res.status(400).json({
-          success: false,
-          message: 'Invalid category. Must be one of: rings, bracelets, necklaces, earrings'
-        });
-      }
-    }
-    
-    // Validate price and stock if provided
-    if (updateData.price !== undefined && updateData.price < 0) {
+
+    // Create Item instance with existing data
+    const item = new Item(existingItemData);
+
+    // Apply updates
+    item.update(req.body);
+
+    // Validate updated item
+    const validationErrors = item.validate();
+    if (validationErrors.length > 0) {
       return res.status(400).json({
         success: false,
-        message: 'Price must be a non-negative number'
+        message: 'Validation failed',
+        errors: validationErrors
       });
     }
-    
-    if (updateData.inStock !== undefined && updateData.inStock < 0) {
-      return res.status(400).json({
-        success: false,
-        message: 'Stock must be a non-negative number'
-      });
-    }
-    
+
+    // Update in database
     const result = await collection.updateOne(
       { id },
-      { $set: updateData }
+      { $set: item.toObject() }
     );
-    
+
     if (result.matchedCount === 0) {
       return res.status(404).json({
         success: false,
         message: 'Inventory item not found'
       });
     }
-    
-    // Get updated item
-    const updatedItem = await collection.findOne({ id });
-    
+
     res.json({
       success: true,
       message: 'Inventory item updated successfully',
-      data: updatedItem
+      data: item.toObject()
     });
   } catch (error) {
     console.error('Error updating inventory item:', error);
