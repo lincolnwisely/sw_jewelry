@@ -7,6 +7,7 @@ const dbManager = require('../utils/database');
 // Import routes
 const inventoryRoutes = require('../routes/inventoryRoutes');
 const authRoutes = require('../routes/authRoutes');
+const subscriberRoutes = require('../routes/subscriberRoutes');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -112,6 +113,7 @@ app.get('/health/detailed', async (req, res) => {
 // API routes
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/subscribe', subscriberRoutes);
 
 // Error handling middleware (this must be last!)
 app.use(notFound);
