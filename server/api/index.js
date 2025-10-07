@@ -22,7 +22,8 @@ app.use((req, res, next) => {
   // Define allowed origins
   const allowedOrigins = [
     'http://localhost:3001',  // Development client
-    'https://sharonwisely.com',  // Production (adjust as needed)
+    'https://sharonwisely.com',  // Production
+    'https://www.sharonwisely.com',  // Production with www
     process.env.CLIENT_URL  // From environment variable
   ].filter(Boolean);  // Remove undefined values
 
