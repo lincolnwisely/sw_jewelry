@@ -12,6 +12,7 @@ import AdminDashboard from './components/AdminDashboard.tsx';
 import AdminInventory from './components/AdminInventory.tsx';
 import AddProduct from './components/AddProduct.tsx';
 import RecentProductsGrid from './components/RecentProductsGrid.tsx';
+import WaitlistSignup from './components/WaitlistSignup.tsx';
 import { useAuth } from './context/AuthContext.tsx';
 
 // Register page component that can use hooks
@@ -32,9 +33,9 @@ function RegisterPage() {
       console.error('Registration failed:', error);
     }
   };
-console.log("state',", state)
+  console.log("state',", state)
   return (
-    <RegisterForm 
+    <RegisterForm
       onSubmit={handleRegister}
       loading={state.loading}
       error={state.error}
@@ -57,18 +58,14 @@ export const router = createBrowserRouter([
                 Sharon Wisely
               </h1>
 
-              <p className="text-xs sm:text-sm md:text-base text-gray-600 mx-auto max-w-xl px-2 sm:px-4 mb-6 sm:mb-8">
-                This site is in-progress.{" "}
-                <a
-                  className="underline hover:text-black transition-colors"
-                  href="https://www.etsy.com/shop/SharonWiselyJewelry"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  View past sales on Etsy
-                </a>
-                .
-              </p>
+
+              {/* Waitlist Signup */}
+              <div className="mb-8 sm:mb-12">
+                <p className="text-sm text-gray-700 mb-4">
+                  This site is currently a work in progress. Be the first to know when the site is open for business. We will never share or sell your information.
+                </p>
+                <WaitlistSignup compact />
+              </div>
             </div>
 
             {/* Recent Products Grid */}

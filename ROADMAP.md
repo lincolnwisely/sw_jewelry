@@ -13,51 +13,54 @@
 
 ## Recent Updates (September 2025)
 
-- ✅ **Authentication System**: Complete user registration/login with JWT
-- ✅ **Design System**: Updated from purple to black theme across all components
-- ✅ **Environment Setup**: Fixed .env.local configuration for MongoDB connection
-- ✅ **API Testing**: Added curl examples for endpoint testing
-- ✅ **Mobile Responsiveness**: Fully responsive navigation and homepage design
-- ✅ **JWT Token Management**: Fixed token expiration handling and automatic logout
-- ✅ **Admin System**: Complete admin authentication, routing, and dashboard
-- ✅ **Admin Inventory Management**: Full CRUD interface for product management
-- ✅ **🎉 MAJOR: Multi-Image Product System**: Complete Cloudinary integration with drag & drop upload, backward-compatible database schema supporting both single `image` and multi-image `images` array format
+- [x] **Authentication System**: Complete user registration/login with JWT
+- [x] **Design System**: Updated from purple to black theme across all components
+- [x] **Environment Setup**: Fixed .env.local configuration for MongoDB connection
+- [x] **API Testing**: Added curl examples for endpoint testing
+- [x] **Mobile Responsiveness**: Fully responsive navigation and homepage design
+- [x] **JWT Token Management**: Fixed token expiration handling and automatic logout
+- [x] **Admin System**: Complete admin authentication, routing, and dashboard
+- [x] **Admin Inventory Management**: Full CRUD interface for product management
+- [x] **Multi-Image Product System**: Complete Cloudinary integration with drag & drop upload, backward-compatible database schema supporting both single `image` and multi-image `images` array format
 
-## Latest Updates (v1.5.0) - October 4, 2025
+## Latest Updates (v1.5.0) - October 7, 2025
 
-- ✅ **🔐 SECURITY: HttpOnly Cookie Authentication**: Migrated from localStorage to secure HttpOnly cookies for enhanced XSS protection
-- ✅ **🛡️ Enhanced CORS**: Updated CORS configuration with credentials support and explicit origin whitelist
-- ✅ **🧹 Code Cleanup**: Removed client-side token management and simplified authentication flow
-- ✅ **🚀 CI/CD Pipeline**: Automated GitHub Actions deployment to Fly.io
-- ✅ **🔧 Database Optimization**: Centralized connection manager with connection pooling (min: 2, max: 10)
-- ✅ **📊 Database Indexing**: Comprehensive indexing strategy with text search capabilities
-- ✅ **🔐 Enhanced Authentication**: Admin role-based routing with immediate user data access
-- ✅ **💚 Health Monitoring**: Server health check endpoints for monitoring
-- ✅ **⚡ Performance**: Significant database performance improvements
+- [x] **SECURITY: HttpOnly Cookie Authentication**: Migrated from localStorage to secure HttpOnly cookies for enhanced XSS protection
+- [x] **Enhanced CORS**: Updated CORS configuration with credentials support and explicit origin whitelist
+- [x] **Code Cleanup**: Removed client-side token management and simplified authentication flow
+- [x] **CI/CD Pipeline**: Automated GitHub Actions deployment to Fly.io
+- [x] **Database Optimization**: Centralized connection manager with connection pooling (min: 2, max: 10)
+- [x] **Database Indexing**: Comprehensive indexing strategy with text search capabilities
+- [x] **Enhanced Authentication**: Admin role-based routing with immediate user data access
+- [x] **Health Monitoring**: Server health check endpoints for monitoring
+- [x] **Performance**: Significant database performance improvements
+- [x] **Waitlist System**: Email signup form for launch notifications with subscriber management
 
 ### Phase 1: Customer-Facing Store (2-3 weeks)
 
 1. Enhanced Product Catalog
-
-
     - [ ] Improved product grid with better styling
     - [ ] Product detail pages with image galleries
     - [x] Category filtering and search
     - [x] Price display and stock indicators
 
 2. Shopping Cart System
-
-
     - [x] Add to cart functionality
     - [x] Cart persistence (localStorage/session)
     - [x] Cart management (update quantities, remove items)
     - [ ] Mini cart component
 
+3. Waitlist & Marketing
+    - [x] Email signup form on homepage
+    - [x] Subscriber database model and validation
+    - [x] Public subscribe/unsubscribe endpoints
+    - [x] Admin subscriber management (view all, stats)
+    - [ ] Email notification system for launch
+    - [ ] Welcome email automation
+
 ### Phase 2: E-commerce Core (2-3 weeks)
 
-3. User Authentication
-
-
+4. User Authentication
     - [x] Customer registration/login
     - [x] User profiles and account management
     - [x] Session management (HttpOnly cookies - secure, XSS-protected)
@@ -68,9 +71,7 @@
     - [x] Secure cookie-based authentication (no localStorage)
     - [ ] Password reset functionality
 
-4. Payment Integration
-
-
+5. Payment Integration
     - [ ] Stripe payment processing
     - [ ] Checkout flow with order summary
     - [ ] Order confirmation and receipts
@@ -78,32 +79,27 @@
 
 ### Phase 3: Business Management (2-3 weeks)
 
-5. Admin Dashboard
-
-
+6. Admin Dashboard
     - [x] Protected admin routes with role-based access control
     - [x] Admin layout with responsive sidebar navigation
     - [x] Admin dashboard with stats overview and quick actions
     - [x] Inventory management interface with search, filtering, and CRUD operations
+    - [ ] Subscriber management interface
     - [ ] Order management and fulfillment
     - [ ] User management interface
     - [ ] Analytics and reporting
 
-6. Content Management
-
-
-    - [x] **Multi-image upload for products** (Cloudinary integration)
-    - [x] **Product creation interface** with full form validation
-    - [x] **Image management system** with drag & drop upload
-    - [x] **Backward-compatible database schema** (supports both single image and images array)
+7. Content Management
+    - [x] Multi-image upload for products (Cloudinary integration)
+    - [x] Product creation interface with full form validation
+    - [x] Image management system with drag & drop upload
+    - [x] Backward-compatible database schema (supports both single image and images array)
     - [ ] Product editing interface
     - [ ] Bulk inventory operations
 
 ### Phase 4: Polish & Deployment (1-2 weeks)
 
-7. UI/UX Improvements
-
-
+8. UI/UX Improvements
     - [x] Mobile responsiveness (complete - responsive navigation and homepage)
     - [x] Loading states and error handling
     - [x] Authentication state management with secure cookies
@@ -112,21 +108,21 @@
     - [ ] Performance optimization
     - [x] Dark theme implementation (black/gray color scheme)
 
-
 ### Next Priorities
 
-8. **Payment Integration**
+9. Payment Integration
     - [ ] Stripe integration for checkout
     - [ ] Order confirmation system
 
-9. **Enhanced Features**
+10. Enhanced Features
     - [ ] Add Materials (copper, silver, leather, turquoise, beads / Swarovski)
     - [ ] Add ratings and reviews
     - [ ] Wishlist functionality
     - [ ] Password reset flow
 
-10. **Admin Dashboard** *(Mostly Complete)*
+11. Admin Dashboard (Mostly Complete)
     - [x] Product management interface
+    - [ ] Subscriber management UI
     - [ ] Order tracking system
     - [ ] User management
     - [ ] Admin user creation tools
@@ -134,40 +130,40 @@
 
 ### Phase 5: Python Integration & Analytics (1-2 weeks)
 
-11. **Business Intelligence & Analytics**
-    - [ ] Sales analytics script (`scripts/analytics.py`)
+12. Business Intelligence & Analytics
+    - [ ] Sales analytics script (scripts/analytics.py)
     - [ ] Customer insights and order pattern analysis
     - [ ] Inventory turnover reports
     - [ ] Seasonal trend analysis
     - [ ] Performance dashboards for Sharon
 
-12. **Data Processing & Automation**
-    - [ ] Image processing pipeline (`scripts/image_processing.py`)
-    - [ ] Bulk product operations (`scripts/bulk_operations.py`)
-    - [ ] Database backup automation (`scripts/backup_restore.py`)
-    - [ ] SEO content generator (`scripts/seo_generator.py`)
+13. Data Processing & Automation
+    - [ ] Image processing pipeline (scripts/image_processing.py)
+    - [ ] Bulk product operations (scripts/bulk_operations.py)
+    - [ ] Database backup automation (scripts/backup_restore.py)
+    - [ ] SEO content generator (scripts/seo_generator.py)
 
-13. **External Integrations**
+14. External Integrations
     - [ ] Shipping API integration (FedEx, UPS)
     - [ ] Email marketing automation
     - [ ] Social media posting automation
     - [ ] Inventory sync with suppliers
 
-14. **Learning Projects**
-    - [ ] Python MongoDB connection setup (`scripts/db_connection.py`)
+15. Learning Projects
+    - [ ] Python MongoDB connection setup (scripts/db_connection.py)
     - [ ] Data visualization with matplotlib/plotly
     - [ ] API clients for third-party services
     - [ ] Automated report generation
 
 ### Phase 6: Performance & Optimization (Recent Progress)
 
-15. **Data Caching & State Management**
+16. Data Caching & State Management
     - [x] TanStack Query integration for data caching
     - [x] Replace manual fetch patterns with useQuery hooks
     - [x] Automatic background refetching and error handling
-    - [x] **Category-specific query hooks for optimized filtering**
-    - [x] **Mutation hooks for create/update/delete operations** (create & delete implemented)
-    - [x] **Automatic cache invalidation** on mutations
+    - [x] Category-specific query hooks for optimized filtering
+    - [x] Mutation hooks for create/update/delete operations (create & delete implemented)
+    - [x] Automatic cache invalidation on mutations
     - [ ] Update/edit product mutation hooks
 
 ### Technical Debt & Improvements

@@ -29,7 +29,13 @@ export const API_ENDPOINTS = {
     LOGIN: `${API_BASE_URL}/api/auth/login`,
     LOGOUT: `${API_BASE_URL}/api/auth/logout`,
     ME: `${API_BASE_URL}/api/auth/me`,
-  }
+  },
+
+  // Subscriber/Waitlist endpoints
+  SUBSCRIBE: `${API_BASE_URL}/api/subscribe`,
+  UNSUBSCRIBE: `${API_BASE_URL}/api/subscribe/unsubscribe`,
+  SUBSCRIBERS: `${API_BASE_URL}/api/subscribe`,
+  SUBSCRIBER_STATS: `${API_BASE_URL}/api/subscribe/stats`,
 };
 
 // JWT token utilities
