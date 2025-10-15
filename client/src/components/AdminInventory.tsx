@@ -232,7 +232,7 @@ const AdminInventory: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                       <Link
-                        to={`/admin/inventory/${item._id}/edit`}
+                        to={`/admin/inventory/${item.id}/edit`}
                         className="text-black hover:text-gray-700"
                       >
                         Edit

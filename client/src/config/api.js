@@ -4,12 +4,12 @@ const getApiUrl = () => {
   if (process.env.REACT_APP_API_URL) {
     return process.env.REACT_APP_API_URL;
   }
-  
-  // Development fallback
+
+  // Development: use relative URLs to leverage proxy
   if (process.env.NODE_ENV === 'development') {
-    return 'http://localhost:3000';
+    return '';  // Empty string = relative URLs that go through proxy
   }
-  
+
   // Production fallback (update with your deployed URL)
   return 'https://server-bold-resonance-8209.fly.dev';
 };
