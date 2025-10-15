@@ -1,6 +1,6 @@
 {
   "name": "@sw_jewelry/client",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "dependencies": {
     "@cloudinary/react": "^1.14.3",
