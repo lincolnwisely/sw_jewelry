@@ -48,3 +48,29 @@ export function useDeleteProduct() {
     }
   });
 }
+
+// Custom hook for editing a product
+export function useEditProduct() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ productId, productData }: { productId: string; productData: Partial<Item> }): Promise<Item> => {
+      const response = await apiCall(API_ENDPOINTS.INVENTORY_BY_ID(productId), {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productData),
+      });
+
+      return response.data;
+    },
+    onSuccess: () => {
+      // Automatically refresh all inventory-related queries
+      queryClient.invalidateQueries({ queryKey: ['inventory'] });
+    },
+    onError: (error) => {
+      console.error('Error editing product:', error);
+    }
+  });
+}

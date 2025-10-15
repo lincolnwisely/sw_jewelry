@@ -10,7 +10,7 @@ const AuthDebug: React.FC = () => {
       <div>Loading: {state.loading.toString()}</div>
       <div>Authenticated: {state.isAuthenticated.toString()}</div>
       <div>User: {state.user ? `${state.user.firstName} (${state.user.role})` : 'null'}</div>
-      <div>Token: {state.token ? 'exists' : 'null'}</div>
+      <div>Auth: HttpOnly Cookie</div>
       <div>Error: {state.error || 'none'}</div>
     </div>
   );

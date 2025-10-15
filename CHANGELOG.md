@@ -2,9 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.0] - 2025-10-14
+
+### Added
+- **Product Editing Interface**: Complete EditProduct component for updating existing inventory items
+- **useEditProduct Mutation Hook**: TanStack Query mutation for PUT requests to inventory API
+- **Type-Safe Edit Operations**: Full TypeScript support with proper type guards and validation
+
+### Enhanced
+- **EditProduct Component**: Pre-populated form fields with existing product data
+- **Loading & Error States**: Spinner during data fetch and "Product Not Found" fallback
+- **Form Validation**: Comprehensive validation matching AddProduct component
+- **Type Safety Improvements**: Fixed Cart component inStock type checking (number | boolean)
+
+### Fixed
+- **AuthDebug Component**: Removed obsolete `state.token` reference after HttpOnly cookie migration
+- **Cart Type Guards**: Added proper `typeof` checks for numeric inStock comparisons
+- **Hook Declaration Order**: Fixed useState/useEffect ordering in EditProduct
+- **Data Access Pattern**: Switched from `useInventory` to `useInventoryById` for single product fetch
+- **TypeScript Type Errors**: Added guard clause for optional `id` parameter from useParams
+
+### Technical
+- **useInventoryById Hook**: Leverages existing hook for efficient single-product queries
+- **Partial<Item> Type**: Edit mutation accepts partial product data for flexible updates
+- **Cache Invalidation**: Automatic inventory query refresh on successful edit
+- **Guard Clauses**: Type narrowing for `string | undefined` to `string`
+
+### Phase 6 Completion
+- Multi-image upload for products (Cloudinary integration)
+- Product creation interface with full form validation
+- Product editing interface for existing items
+- Image management system with drag & drop upload
+- Backward-compatible database schema
+- TanStack Query mutations with cache invalidation
+
 ## [1.5.0] - 2025-10-04
 
-### 🔐 Security Enhancement: HttpOnly Cookie Authentication
+### Security Enhancement: HttpOnly Cookie Authentication
 
 ### Changed
 - **Migrated from localStorage to HttpOnly cookies**: JWT tokens now stored in secure HttpOnly cookies instead of localStorage
@@ -26,10 +60,10 @@ All notable changes to this project will be documented in this file.
 - **Updated API Hooks**: Removed manual Authorization headers from mutation hooks
 
 ### Security Improvements
-- ✅ **XSS Protection**: HttpOnly cookies cannot be accessed by malicious JavaScript
-- ✅ **CSRF Mitigation**: SameSite cookie attribute helps prevent cross-site request forgery
-- ✅ **Automatic Security**: Browser enforces cookie security policies
-- ✅ **No Token Exposure**: Tokens never touch client-side code
+- **XSS Protection**: HttpOnly cookies cannot be accessed by malicious JavaScript
+- **CSRF Mitigation**: SameSite cookie attribute helps prevent cross-site request forgery
+- **Automatic Security**: Browser enforces cookie security policies
+- **No Token Exposure**: Tokens never touch client-side code
 
 ### Removed
 - Token expiration checking on client (server handles this)
@@ -39,7 +73,7 @@ All notable changes to this project will be documented in this file.
 
 ## [1.3.0] - 2025-09-25
 
-### 🎉 Major Feature: Multi-Image Product Management
+### Major Feature: Multi-Image Product Management
 
 ### Added
 - **Cloudinary Integration**: Professional image hosting with organized folder structure (`sw_jewelry/inventory/`)
@@ -71,11 +105,11 @@ All notable changes to this project will be documented in this file.
 - **Production Tested**: Verified with existing 14 products in production database
 
 ### Phase 6 Progress
-- ✅ Multi-image upload for products (Cloudinary integration)
-- ✅ Product creation interface with full form validation
-- ✅ Image management system with drag & drop upload
-- ✅ Backward-compatible database schema
-- ✅ TanStack Query mutations with cache invalidation
+- Multi-image upload for products (Cloudinary integration)
+- Product creation interface with full form validation
+- Image management system with drag & drop upload
+- Backward-compatible database schema
+- TanStack Query mutations with cache invalidation
 
 ### Next Up
 - [ ] Product editing interface for existing items
@@ -131,11 +165,11 @@ All notable changes to this project will be documented in this file.
 - NPM workspaces for monorepo structure
 
 ### Phase 1 Progress
-- ✅ Category filtering and search
-- ✅ Price display and stock indicators  
-- ✅ Add to cart functionality
-- ✅ Cart persistence (localStorage/session)
-- ✅ Cart management (update quantities, remove items)
+- Category filtering and search
+- Price display and stock indicators  
+- Add to cart functionality
+- Cart persistence (localStorage/session)
+- Cart management (update quantities, remove items)
 
 ### Next Up (Phase 1 Completion)
 - [ ] Improved product grid with better styling

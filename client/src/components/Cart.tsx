@@ -116,14 +116,14 @@ export default function Cart() {
                         onClick={() =>
                           updateQuantity(item.id, item.quantity + 1)
                         }
-                        disabled={item.quantity >= item.inStock}
+                        disabled={typeof item.inStock === 'number' && item.quantity >= item.inStock}
                         className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         +
                       </button>
                     </div>
 
-                    {item.quantity >= item.inStock && (
+                    {typeof item.inStock === 'number' && item.quantity >= item.inStock && (
                       <p className="text-xs text-orange-600 mt-1">
                         Maximum quantity reached
                       </p>
