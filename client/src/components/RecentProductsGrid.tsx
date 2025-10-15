@@ -50,8 +50,8 @@ export default function RecentProductsGrid() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
           {recentProducts.map((product: Item) => (
             <Link
-              key={product.id || product._id}
-              to={`/inventory/${product.id || product._id}`}
+              key={product.id}
+              to={`/inventory/${product.id}`}
               className="group block bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden border border-gray-200"
             >
               <div className="aspect-square overflow-hidden bg-gray-100">
