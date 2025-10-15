@@ -244,7 +244,7 @@ const AdminInventory: React.FC = () => {
                         Delete
                       </button>
                       <Link
-                        to={`/inventory/${item._id}`}
+                        to={`/inventory/${item.id}`}
                         className="text-gray-600 hover:text-gray-800"
                         target="_blank"
                         rel="noopener noreferrer"
