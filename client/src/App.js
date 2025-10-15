@@ -11,6 +11,7 @@ import AdminLayout from './components/AdminLayout.tsx';
 import AdminDashboard from './components/AdminDashboard.tsx';
 import AdminInventory from './components/AdminInventory.tsx';
 import AddProduct from './components/AddProduct.tsx';
+import EditProduct from './components/EditProduct.tsx';
 import RecentProductsGrid from './components/RecentProductsGrid.tsx';
 import WaitlistSignup from './components/WaitlistSignup.tsx';
 import { useAuth } from './context/AuthContext.tsx';
@@ -112,6 +113,10 @@ export const router = createBrowserRouter([
           {
             path: "inventory/new",
             element: <AddProduct />
+          },
+          {
+            path: "inventory/:id/edit",
+            element: <EditProduct />
           },
           // We'll add more admin routes here later
           // { path: "orders", element: <AdminOrders /> },

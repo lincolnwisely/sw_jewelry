@@ -34,7 +34,7 @@ export function useInventoryById(id: string) {
   return useQuery({
     queryKey: ['inventory', 'id', id], // Hierarchical cache key
     queryFn: async (): Promise<Item> => {
-      const response = await apiCall(`${API_ENDPOINTS.INVENTORY}/${id}`);
+      const response = await apiCall(API_ENDPOINTS.INVENTORY_BY_ID(id));
       return response.data;
     },
     staleTime: 5 * 60 * 1000, // Data stays fresh for 5 minutes
